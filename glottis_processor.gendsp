@@ -40,6 +40,17 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-2",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 556.0, 578.0, 35.0, 22.0 ],
+					"text" : "out 2"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-3",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -97,15 +108,15 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "//PT 840\r\nnormalizedLFWaveform(input, Te, epsilon, shift, Delta, E0, alpha, omega, intensity, loudness) {\r\n\toutput = 0;\r\n\r\n\tif (input > Te) {\r\n\t\toutput = (0 - exp(0 - epsilon * (input - Te)) + shift) / Delta;\r\n\t}\r\n\r\n\telse {\r\n\t\toutput = E0 * exp(alpha * input) * sin(omega * input);\r\n\t}\r\n\r\n\treturn output * intensity * loudness;\r\n}\r\n\r\ngetNoiseModulator(input, tenseness, intensity) {\r\n\tvoiced = 0.1 + 0.2 * max(0, sin(PI * 2 * input));\r\n    return tenseness * intensity * voiced + (1 - tenseness * intensity ) * 0.3;\r\n}\r\n\r\n//important timbral parameters for this voice\r\nParam intensity(1., min=0, max=1);\r\nParam tenseness(0.6, min=0, max=1);\r\nParam loudness(1, min=0, max=1);\n\r\n//param values received from setupWaveform (external to this patch)\r\nParam shift(0.);\nParam Te(0.);\nParam E0(0.);\nParam Delta(0.);\nParam omega(0.);\nParam alpha(0.);\nParam epsilon(0.);\r\n\r\n//PT 745-749\r\nrawSamp = normalizedLFWaveform(in1, Te, epsilon, shift, Delta, E0, alpha, omega, intensity, loudness);\r\n\r\naspiration = intensity * (1 - sqrt(tenseness)) * getNoiseModulator(in1, tenseness, intensity) * in2;\r\naspiration *= 0.2; //PLUS SOME PERLIN NOISE, EVENTUALLY\r\n\r\nout1 = rawSamp + aspiration;",
+					"code" : "//PT 840\r\nnormalizedLFWaveform(input, Te, epsilon, shift, Delta, E0, alpha, omega, intensity, loudness) {\r\n\toutput = 0;\r\n\r\n\tif (input > Te) {\r\n\t\toutput = (0 - exp(0 - epsilon * (input - Te)) + shift) / Delta;\r\n\t}\r\n\r\n\telse {\r\n\t\toutput = E0 * exp(alpha * input) * sin(omega * input);\r\n\t}\r\n\r\n\treturn output * intensity * loudness;\r\n}\r\n\r\ngetNoiseModulator(input, tenseness, intensity) {\r\n\tvoiced = 0.1 + 0.2 * max(0, sin(PI * 2 * input));\r\n    return tenseness * intensity * voiced + (1 - tenseness * intensity ) * 0.3;\r\n}\r\n\r\n//important timbral parameters for this voice\r\nParam intensity(1., min=0, max=1);\r\nParam tenseness(0.6, min=0, max=1);\r\nParam loudness(1, min=0, max=1);\n\r\n//param values received from setupWaveform (external to this patch)\r\nParam shift(0.);\nParam Te(0.);\nParam E0(0.);\nParam Delta(0.);\nParam omega(0.);\nParam alpha(0.);\nParam epsilon(0.);\r\n\r\n//PT 745-749\r\nrawSamp = normalizedLFWaveform(in1, Te, epsilon, shift, Delta, E0, alpha, omega, intensity, loudness);\r\nnoiseModulator = getNoiseModulator(in1, tenseness, intensity);\r\n\r\naspiration = intensity * (1 - sqrt(tenseness)) * noiseModulator * in2;\r\naspiration *= 0.2; //PLUS SOME PERLIN NOISE, EVENTUALLY\r\n\r\nout1 = rawSamp + aspiration;\r\nout2 = noiseModulator;",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
 					"id" : "obj-7",
 					"maxclass" : "codebox",
 					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
 					"patching_rect" : [ 100.0, 177.0, 525.0, 378.0 ]
 				}
 
@@ -134,6 +145,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-7", 0 ],
 					"source" : [ "obj-10", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-2", 0 ],
+					"source" : [ "obj-7", 1 ]
 				}
 
 			}

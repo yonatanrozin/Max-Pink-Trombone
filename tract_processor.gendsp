@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "dsp.gen",
-		"rect" : [ 34.0, 76.0, 1373.0, 743.0 ],
+		"rect" : [ 524.0, 203.0, 755.0, 736.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -40,52 +40,37 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-25",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 45.0, 556.0, 25.0, 22.0 ],
-					"text" : "/ 8."
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-23",
-					"maxclass" : "newobj",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 37.25, 498.0, 29.5, 22.0 ],
-					"text" : "+"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-22",
+					"id" : "obj-11",
 					"maxclass" : "newobj",
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 249.5, 247.0, 25.0, 22.0 ],
-					"text" : "0.5"
+					"patching_rect" : [ 383.0, 25.0, 28.0, 22.0 ],
+					"text" : "in 3"
 				}
 
 			}
 , 			{
 				"box" : 				{
-					"code" : "//551\r\nglottalOutput = in1;\r\nturbulenceNoise = in2;\r\nlambda = in3;\r\nn = in4;\r\nnoseLength = in5;\r\nnoseStart = n - noseLength + 1;\r\n\r\n//1000 this.junctionOutputR[0] = this.L[0] * this.glottalReflection + glottalOutput;\r\njunctionOutputR.poke(L.peek(0) * 0.75 + glottalOutput, 0);\r\n\r\n//1001 this.junctionOutputL[this.n] = this.R[this.n-1] * this.lipReflection; \r\njunctionOutputL.poke(R.peek(n-1) * -0.85, n);\r\n\r\nfor (i = 1; i < n; i += 1) { //1003\r\n\t\r\n\t//1005 var r = this.reflection[i] * (1-lambda) + this.newReflection[i]*lambda;\r\n\tr = reflection.peek(i) * (1-lambda) + newReflection.peek(i) * lambda;\r\n\t\r\n\t//1006 var w = r * (this.R[i-1] + this.L[i]);\r\n\tw = r * (R.peek(i-1) + L.peek(i));\r\n\t\r\n\t//1007 this.junctionOutputR[i] = this.R[i-1] - w;\r\n\tjunctionOutputR.poke(R.peek(i-1) - w, i);\r\n\t\r\n\t//1008 this.junctionOutputL[i] = this.L[i] + w;\r\n\tjunctionOutputL.poke(L.peek(i) + w, i);\r\n}\r\n\r\ni = noseStart;\r\n\r\n//1013 var r = this.newReflectionLeft * (1-lambda) + this.reflectionLeft*lambda;\r\nr = newReflectionLRN.peek(0) * (1-lambda) + reflectionLRN.peek(0) * lambda;\r\n\r\n//1014 this.junctionOutputL[i] = r*this.R[i-1]+(1+r)*(this.noseL[0]+this.L[i]);\r\njunctionOutputL.poke(r * R.peek(i-1) + (1+r) * (noseL.peek(0) + L.peek(i)), i);\r\n\r\n//1015 r = this.newReflectionRight * (1-lambda) + this.reflectionRight*lambda;\r\nr = newReflectionLRN.peek(1) * (1-lambda) + reflectionLRN.peek(1) * lambda;\r\n\r\n//1016 this.junctionOutputR[i] = r*this.L[i]+(1+r)*(this.R[i-1]+this.noseL[0]);     \r\njunctionOutputR.poke(r * L.peek(i) + (1+r) * (R.peek(i-1) + noseL.peek(0)), i);\r\n\r\n//1017 r = this.newReflectionNose * (1-lambda) + this.reflectionNose*lambda;\r\nr = newReflectionLRN.peek(2) * (1-lambda) + reflectionLRN.peek(2) * lambda;\r\n\r\n//1018 this.noseJunctionOutputR[0] = r*this.noseL[0]+(1+r)*(this.L[i]+this.R[i-1]);\r\nnoseJunctionOutputR.poke(r * noseL.peek(0) + (1+r) * (L.peek(i) + R.peek(i-1)), 0);\r\n\r\nfor (i = 0; i < n; i += 1) { //1019\r\n\t\r\n\t//1021 this.R[i] = this.junctionOutputR[i]*0.999;\r\n\tR.poke(junctionOutputR.peek(i) * 0.999, i);\r\n\t\r\n    //1022 this.L[i] = this.junctionOutputL[i+1]*0.999; \r\n\tL.poke(junctionOutputL.peek(i+1) * 0.999, i);\r\n}\r\n\r\n\r\n//1039 this.noseJunctionOutputL[this.noseLength] = this.noseR[this.noseLength-1] * this.lipReflection; \r\nnoseJunctionOutputL.poke(noseR.peek(noseLength - 1) * -0.85, noseLength);\r\n\r\nfor (i = 1; i < noseLength; i += 1) {\r\n\t//1043 var w = this.noseReflection[i] * (this.noseR[i-1] + this.noseL[i]);\r\n\tw = noseReflection.peek(i) * (noseR.peek(i-1) + noseL.peek(i));\r\n\t\r\n\t//1044 this.noseJunctionOutputR[i] = this.noseR[i-1] - w;\r\n\tnoseJunctionOutputR.poke(noseR.peek(i-1) - w, i);\r\n\t\r\n\t//1045 this.noseJunctionOutputL[i] = this.noseL[i] + w;\r\n\tnoseJunctionOutputL.poke(noseL.peek(i) + w, i);\r\n}\r\n\r\nfor (i = 0; i < noseLength; i += 1) {\r\n\t\r\n\t//1050 this.noseR[i] = this.noseJunctionOutputR[i] * this.fade; \r\n\tnoseR.poke(noseJunctionOutputR.peek(i), i);\r\n\t\r\n\t//1051 this.noseL[i] = this.noseJunctionOutputL[i+1] * this.fade;   \r\n\tnoseL.poke(noseJunctionOutputL.peek(i+1), i);\t\r\n}\r\n\r\nout1 = R.peek(n - 1) + noseR.peek(noseLength-1);\r\n\r\n\r\n/*\r\n//957 (we call calculateReflections every sample)\t\t\t\t\r\nfor (i = 0; i < n; i+= 1) {\r\n\t//this.A[i] = this.diameter[i]*this.diameter[i]; //ignoring PI etc.\r\n\tA.poke(diameter.peek(i) * diameter.peek(i), i);\r\n}\r\n\r\nfor (i = 1; i < n; i+= 1) {\r\n\t//this.reflection[i] = this.newReflection[i];\r\n\treflection.poke(newReflection.peek(i), i);\r\n\t\t\r\n\t//if (this.A[i] == 0) this.newReflection[i] = 0.999; //to prevent some bad behaviour if 0\r\n\t//else this.newReflection[i] = (this.A[i-1]-this.A[i]) / (this.A[i-1]+this.A[i]); \r\n\tif (A.peek(i) == 0) newReflection.poke(0.999, i);\r\n\telse newReflection.poke(( A.peek(i-1) - A.peek(i) ) / ( A.peek(i-1) + A.peek(i) ), i);\r\n}\r\n\r\nreflectionLRN.poke(newReflectionLRN.peek(0), 0);\r\nreflectionLRN.poke(newReflectionLRN.peek(1), 1);\r\nreflectionLRN.poke(newReflectionLRN.peek(2), 1);\r\n\t\r\n//var sum = this.A[this.noseStart]+this.A[this.noseStart+1]+this.noseA[0];\t\r\nsum = A.peek(noseStart) + A.peek(noseStart + 1) + noseA.peek(0);\r\n\t\r\n//this.newReflectionLeft = (2*this.A[this.noseStart]-sum)/sum;\r\nnewReflectionLRN.poke((2 * A.peek(noseStart) - sum) / sum, 0);\r\n\r\n//this.newReflectionRight = (2*this.A[this.noseStart+1]-sum)/sum;   \r\nnewReflectionLRN.poke((2 * A.peek(noseStart + 1) - sum) / sum, 1);\r\n\r\n//this.newReflectionNose = (2*this.noseA[0]-sum)/sum;    \r\nnewReflectionLRN.poke((2 * noseA.peek(0) - sum) / sum, 2);\r\n\r\n\r\n*/",
-					"fontface" : 0,
-					"fontname" : "<Monospaced>",
-					"fontsize" : 12.0,
-					"id" : "obj-21",
-					"maxclass" : "codebox",
-					"numinlets" : 5,
+					"id" : "obj-12",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 818.0, 172.0, 109.0, 22.0 ],
+					"text" : "buffer constrictions"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-7",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 40.18, 285.0, 456.0, 167.0 ]
+					"patching_rect" : [ 27.0, 293.805333375930786, 22.0, 22.0 ],
+					"text" : "/ 8"
 				}
 
 			}
@@ -96,7 +81,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 514.347737699747086, 504.854362010955811, 122.0, 22.0 ],
+					"patching_rect" : [ 550.677940964698792, 705.0, 122.0, 22.0 ],
 					"text" : "buffer noseReflection"
 				}
 
@@ -108,7 +93,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 498.177940964698792, 340.800004005432129, 158.0, 22.0 ],
+					"patching_rect" : [ 534.677940964698792, 541.0, 158.0, 22.0 ],
 					"text" : "buffer noseJunctionOutputR"
 				}
 
@@ -120,7 +105,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 575.83331960439682, 268.749993592500687, 77.0, 22.0 ],
+					"patching_rect" : [ 612.677940964698792, 469.0, 77.0, 22.0 ],
 					"text" : "buffer noseR"
 				}
 
@@ -132,7 +117,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 498.177940964698792, 292.800004005432129, 76.0, 22.0 ],
+					"patching_rect" : [ 534.677940964698792, 493.0, 76.0, 22.0 ],
 					"text" : "buffer noseA"
 				}
 
@@ -144,7 +129,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 498.677940964698792, 229.428571939468384, 50.0, 22.0 ],
+					"patching_rect" : [ 535.677940964698792, 429.0, 50.0, 22.0 ],
 					"text" : "buffer A"
 				}
 
@@ -156,7 +141,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 498.177940964698792, 316.800004005432129, 156.0, 22.0 ],
+					"patching_rect" : [ 534.677940964698792, 517.0, 156.0, 22.0 ],
 					"text" : "buffer noseJunctionOutputL"
 				}
 
@@ -168,7 +153,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 498.677940964698792, 268.800004005432129, 75.0, 22.0 ],
+					"patching_rect" : [ 535.677940964698792, 469.0, 75.0, 22.0 ],
 					"text" : "buffer noseL"
 				}
 
@@ -179,7 +164,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 21.0, 616.0, 25.0, 22.0 ],
+					"patching_rect" : [ 27.0, 327.43365466594696, 25.0, 22.0 ],
 					"text" : "out"
 				}
 
@@ -191,7 +176,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 517.847737699747086, 406.299188017845154, 142.0, 22.0 ],
+					"patching_rect" : [ 554.677940964698792, 606.0, 142.0, 22.0 ],
 					"text" : "buffer newReflectionLRN"
 				}
 
@@ -203,7 +188,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 517.847737699747086, 382.152207851409912, 115.0, 22.0 ],
+					"patching_rect" : [ 554.677940964698792, 582.0, 115.0, 22.0 ],
 					"text" : "buffer reflectionLRN"
 				}
 
@@ -215,7 +200,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 509.677940964698792, 22.0, 117.0, 22.0 ],
+					"patching_rect" : [ 653.0, 22.0, 117.0, 22.0 ],
 					"text" : "buffer noseDiameter"
 				}
 
@@ -227,7 +212,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 498.677940964698792, 134.000001192092896, 118.0, 22.0 ],
+					"patching_rect" : [ 535.677940964698792, 334.0, 118.0, 22.0 ],
 					"text" : "buffer newReflection"
 				}
 
@@ -239,7 +224,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 498.677940964698792, 109.892858564853668, 91.0, 22.0 ],
+					"patching_rect" : [ 535.677940964698792, 310.0, 91.0, 22.0 ],
 					"text" : "buffer reflection"
 				}
 
@@ -251,7 +236,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 383.0, 22.0, 100.0, 22.0 ],
+					"patching_rect" : [ 535.677940964698792, 22.0, 100.0, 22.0 ],
 					"text" : "buffer diameter"
 				}
 
@@ -263,7 +248,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 498.677940964698792, 181.321429312229156, 128.0, 22.0 ],
+					"patching_rect" : [ 535.677940964698792, 381.0, 128.0, 22.0 ],
 					"text" : "buffer junctionOutputL"
 				}
 
@@ -275,7 +260,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 549.570797622203827, 205.428571939468384, 51.0, 22.0 ],
+					"patching_rect" : [ 586.677940964698792, 405.0, 51.0, 22.0 ],
 					"text" : "buffer R"
 				}
 
@@ -287,7 +272,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 498.677940964698792, 205.428571939468384, 49.0, 22.0 ],
+					"patching_rect" : [ 535.677940964698792, 405.0, 49.0, 22.0 ],
 					"text" : "buffer L"
 				}
 
@@ -299,7 +284,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 519.200007736682892, 452.00000673532486, 150.0, 34.0 ],
+					"patching_rect" : [ 555.677940964698792, 652.0, 150.0, 34.0 ],
 					"text" : "add processTransients() and addTurbulenceNoise()"
 				}
 
@@ -311,26 +296,14 @@
 					"numinlets" : 0,
 					"numoutlets" : 2,
 					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 498.677940964698792, 158.107143819332123, 128.0, 22.0 ],
+					"patching_rect" : [ 535.677940964698792, 358.0, 128.0, 22.0 ],
 					"text" : "buffer junctionOutputR"
 				}
 
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-7",
-					"maxclass" : "newobj",
-					"numinlets" : 0,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 317.796595394611359, 22.0, 19.0, 22.0 ],
-					"text" : "0"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"code" : "//551\r\nglottalOutput = in1;\r\nturbulenceNoise = in2;\r\nlambda = in3;\r\nn = in4;\r\nnoseLength = in5;\r\nnoseStart = n - noseLength + 1;\r\n\r\n//1000 this.junctionOutputR[0] = this.L[0] * this.glottalReflection + glottalOutput;\r\njunctionOutputR.poke(L.peek(0) * 0.75 + glottalOutput, 0);\r\n\r\n//1001 this.junctionOutputL[this.n] = this.R[this.n-1] * this.lipReflection; \r\njunctionOutputL.poke(R.peek(n-1) * -0.85, n);\r\n\r\nfor (i = 1; i < n; i += 1) { //1003\r\n\t\r\n\t//1005 var r = this.reflection[i] * (1-lambda) + this.newReflection[i]*lambda;\r\n\tr = reflection.peek(i) * (1-lambda) + newReflection.peek(i) * lambda;\r\n\t\r\n\t//1006 var w = r * (this.R[i-1] + this.L[i]);\r\n\tw = r * (R.peek(i-1) + L.peek(i));\r\n\t\r\n\t//1007 this.junctionOutputR[i] = this.R[i-1] - w;\r\n\tjunctionOutputR.poke(R.peek(i-1) - w, i);\r\n\t\r\n\t//1008 this.junctionOutputL[i] = this.L[i] + w;\r\n\tjunctionOutputL.poke(L.peek(i) + w, i);\r\n}\r\n\r\ni = noseStart;\r\n\r\n//1013 var r = this.newReflectionLeft * (1-lambda) + this.reflectionLeft*lambda;\r\nr = newReflectionLRN.peek(0) * (1-lambda) + reflectionLRN.peek(0) * lambda;\r\n\r\n//1014 this.junctionOutputL[i] = r*this.R[i-1]+(1+r)*(this.noseL[0]+this.L[i]);\r\njunctionOutputL.poke(r * R.peek(i-1) + (1+r) * (noseL.peek(0) + L.peek(i)), i);\r\n\r\n//1015 r = this.newReflectionRight * (1-lambda) + this.reflectionRight*lambda;\r\nr = newReflectionLRN.peek(1) * (1-lambda) + reflectionLRN.peek(1) * lambda;\r\n\r\n//1016 this.junctionOutputR[i] = r*this.L[i]+(1+r)*(this.R[i-1]+this.noseL[0]);     \r\njunctionOutputR.poke(r * L.peek(i) + (1+r) * (R.peek(i-1) + noseL.peek(0)), i);\r\n\r\n//1017 r = this.newReflectionNose * (1-lambda) + this.reflectionNose*lambda;\r\nr = newReflectionLRN.peek(2) * (1-lambda) + reflectionLRN.peek(2) * lambda;\r\n\r\n//1018 this.noseJunctionOutputR[0] = r*this.noseL[0]+(1+r)*(this.L[i]+this.R[i-1]);\r\nnoseJunctionOutputR.poke(r * noseL.peek(0) + (1+r) * (L.peek(i) + R.peek(i-1)), 0);\r\n\r\nfor (i = 0; i < n; i += 1) { //1019\r\n\t\r\n\t//1021 this.R[i] = this.junctionOutputR[i]*0.999;\r\n\tR.poke(junctionOutputR.peek(i) * 0.999, i);\r\n\t\r\n    //1022 this.L[i] = this.junctionOutputL[i+1]*0.999; \r\n\tL.poke(junctionOutputL.peek(i+1) * 0.999, i);\r\n}\r\n\r\n\r\n//1039 this.noseJunctionOutputL[this.noseLength] = this.noseR[this.noseLength-1] * this.lipReflection; \r\nnoseJunctionOutputL.poke(noseR.peek(noseLength - 1) * -0.85, noseLength);\r\n\r\nfor (i = 1; i < noseLength; i += 1) {\r\n\t//1043 var w = this.noseReflection[i] * (this.noseR[i-1] + this.noseL[i]);\r\n\tw = noseReflection.peek(i) * (noseR.peek(i-1) + noseL.peek(i));\r\n\t\r\n\t//1044 this.noseJunctionOutputR[i] = this.noseR[i-1] - w;\r\n\tnoseJunctionOutputR.poke(noseR.peek(i-1) - w, i);\r\n\t\r\n\t//1045 this.noseJunctionOutputL[i] = this.noseL[i] + w;\r\n\tnoseJunctionOutputL.poke(noseL.peek(i) + w, i);\r\n}\r\n\r\nfor (i = 0; i < noseLength; i += 1) {\r\n\t\r\n\t//1050 this.noseR[i] = this.noseJunctionOutputR[i] * this.fade; \r\n\tnoseR.poke(noseJunctionOutputR.peek(i), i);\r\n\t\r\n\t//1051 this.noseL[i] = this.noseJunctionOutputL[i+1] * this.fade;   \r\n\tnoseL.poke(noseJunctionOutputL.peek(i+1), i);\t\r\n}\r\n\r\nout1 = R.peek(n - 1) + noseR.peek(noseLength-1);\r\n\r\n/*\r\n\r\n//957 (we call calculateReflections every sample)\t\t\t\t\r\nfor (i = 0; i < n; i+= 1) {\r\n\t//this.A[i] = this.diameter[i]*this.diameter[i]; //ignoring PI etc.\r\n\tA.poke(diameter.peek(i) * diameter.peek(i), i);\r\n}\r\n\r\nfor (i = 1; i < n; i+= 1) {\r\n\t//this.reflection[i] = this.newReflection[i];\r\n\treflection.poke(newReflection.peek(i), i);\r\n\t\t\r\n\t//if (this.A[i] == 0) this.newReflection[i] = 0.999; //to prevent some bad behaviour if 0\r\n\t//else this.newReflection[i] = (this.A[i-1]-this.A[i]) / (this.A[i-1]+this.A[i]); \r\n\tif (A.peek(i) == 0) newReflection.poke(0.999, i);\r\n\telse newReflection.poke(( A.peek(i-1) - A.peek(i) ) / ( A.peek(i-1) + A.peek(i) ), i);\r\n}\r\n\r\nreflectionLRN.poke(newReflectionLRN.peek(0), 0);\r\nreflectionLRN.poke(newReflectionLRN.peek(1), 1);\r\nreflectionLRN.poke(newReflectionLRN.peek(2), 1);\r\n\t\r\n//var sum = this.A[this.noseStart]+this.A[this.noseStart+1]+this.noseA[0];\t\r\nsum = A.peek(noseStart) + A.peek(noseStart + 1) + noseA.peek(0);\r\n\t\r\n//this.newReflectionLeft = (2*this.A[this.noseStart]-sum)/sum;\r\nnewReflectionLRN.poke((2 * A.peek(noseStart) - sum) / sum, 0);\r\n\r\n//this.newReflectionRight = (2*this.A[this.noseStart+1]-sum)/sum;   \r\nnewReflectionLRN.poke((2 * A.peek(noseStart + 1) - sum) / sum, 1);\r\n\r\n//this.newReflectionNose = (2*this.noseA[0]-sum)/sum;    \r\nnewReflectionLRN.poke((2 * noseA.peek(0) - sum) / sum, 2);\r\n\r\n\r\n*/",
+					"code" : "//551\r\nglottalOutput = in1;\r\nnoiseModulator = in2;\r\nturbulenceNoise = in3;\r\nn = in4;\r\nnoseLength = in5;\r\nnoseStart = n - noseLength + 1;\r\n\r\nvocalOutput = 0;\r\n\r\nfor (lambda = 0; lambda <= 0.5; lambda += 0.5) {\r\n\t\r\n\t//addTurbulenceNoise replacement\r\n\t//since there's no UI, get index/diameter of constriction using\r\n\t//locations/heights of \"valleys\" in diameter values\r\n\tfor (i = 1; i < 43; i+= 1) {\r\n\t\td = diameter.peek(i);\r\n\t\tif (d < diameter.peek(i-1) && d < diameter.peek(i+1) && d > 0) {\r\n\t\t\t\r\n\t\t\td += 0.3; \r\n\t\t\t\r\n\t\t\t//\"addTurbulenceNoiseAtIndex()\"\r\n\t\t\t//index = i; diameter = d, intensity = 1 (reevaluate?)\r\n\t\t\t//1119\r\n\t\t\tnoise = 0.66 * turbulenceNoise * noiseModulator;\r\n\t\t\t\r\n\t\t\tthinness0 = clamp(8 * (0.7 - d), 0, 1);\r\n\t\t\topenness = clamp(30 * (d - 0.3), 0, 1);\r\n\t\t\tnoise0 = noise * thinness0 * openness;\r\n\t\t\t\r\n\t\t\tR.poke(R.peek(i+1) + noise0/2, i+1);\r\n\t\t\tL.poke(L.peek(i+1) + noise0/2, i+1);\r\n\t\t\t\r\n\t\t}\r\n\t}\r\n\t\r\n\t\r\n\t\r\n\t\r\n\t\r\n\t//1000 this.junctionOutputR[0] = this.L[0] * this.glottalReflection + glottalOutput;\r\n\tjunctionOutputR.poke(L.peek(0) * 0.75 + glottalOutput, 0);\r\n\r\n\t//1001 this.junctionOutputL[this.n] = this.R[this.n-1] * this.lipReflection; \r\n\tjunctionOutputL.poke(R.peek(n-1) * -0.85, n);\r\n\r\n\tfor (i = 1; i < n; i += 1) { //1003\r\n\t\r\n\t\t//1005 var r = this.reflection[i] * (1-lambda) + this.newReflection[i]*lambda;\r\n\t\tr = reflection.peek(i) * (1-lambda) + newReflection.peek(i) * lambda;\r\n\t\r\n\t\t//1006 var w = r * (this.R[i-1] + this.L[i]);\r\n\t\tw = r * (R.peek(i-1) + L.peek(i));\r\n\t\r\n\t\t//1007 this.junctionOutputR[i] = this.R[i-1] - w;\r\n\t\tjunctionOutputR.poke(R.peek(i-1) - w, i);\r\n\t\r\n\t\t//1008 this.junctionOutputL[i] = this.L[i] + w;\r\n\t\tjunctionOutputL.poke(L.peek(i) + w, i);\r\n\t}\r\n\r\n\ti = noseStart;\r\n\r\n\t//1013 var r = this.newReflectionLeft * (1-lambda) + this.reflectionLeft*lambda;\r\n\tr = newReflectionLRN.peek(0) * (1-lambda) + reflectionLRN.peek(0) * lambda;\r\n\r\n\t//1014 this.junctionOutputL[i] = r*this.R[i-1]+(1+r)*(this.noseL[0]+this.L[i]);\r\n\tjunctionOutputL.poke(r * R.peek(i-1) + (1+r) * (noseL.peek(0) + L.peek(i)), i);\r\n\r\n\t//1015 r = this.newReflectionRight * (1-lambda) + this.reflectionRight*lambda;\r\n\tr = newReflectionLRN.peek(1) * (1-lambda) + reflectionLRN.peek(1) * lambda;\r\n\r\n\t//1016 this.junctionOutputR[i] = r*this.L[i]+(1+r)*(this.R[i-1]+this.noseL[0]);     \r\n\tjunctionOutputR.poke(r * L.peek(i) + (1+r) * (R.peek(i-1) + noseL.peek(0)), i);\r\n\r\n\t//1017 r = this.newReflectionNose * (1-lambda) + this.reflectionNose*lambda;\r\n\tr = newReflectionLRN.peek(2) * (1-lambda) + reflectionLRN.peek(2) * lambda;\r\n\r\n\t//1018 this.noseJunctionOutputR[0] = r*this.noseL[0]+(1+r)*(this.L[i]+this.R[i-1]);\r\n\tnoseJunctionOutputR.poke(r * noseL.peek(0) + (1+r) * (L.peek(i) + R.peek(i-1)), 0);\r\n\r\n\tfor (i = 0; i < n; i += 1) { //1019\r\n\t\r\n\t\t//1021 this.R[i] = this.junctionOutputR[i]*0.999;\r\n\t\tR.poke(junctionOutputR.peek(i) * 0.999, i);\r\n\t\r\n    \t//1022 this.L[i] = this.junctionOutputL[i+1]*0.999; \r\n\t\tL.poke(junctionOutputL.peek(i+1) * 0.999, i);\r\n\t}\r\n\r\n\r\n\t//1039 this.noseJunctionOutputL[this.noseLength] = this.noseR[this.noseLength-1] * this.lipReflection; \r\n\tnoseJunctionOutputL.poke(noseR.peek(noseLength - 1) * -0.85, noseLength);\r\n\r\n\tfor (i = 1; i < noseLength; i += 1) {\r\n\t\t//1043 var w = this.noseReflection[i] * (this.noseR[i-1] + this.noseL[i]);\r\n\t\tw = noseReflection.peek(i) * (noseR.peek(i-1) + noseL.peek(i));\r\n\t\r\n\t\t//1044 this.noseJunctionOutputR[i] = this.noseR[i-1] - w;\r\n\t\tnoseJunctionOutputR.poke(noseR.peek(i-1) - w, i);\r\n\t\r\n\t\t//1045 this.noseJunctionOutputL[i] = this.noseL[i] + w;\r\n\t\tnoseJunctionOutputL.poke(noseL.peek(i) + w, i);\r\n\t}\r\n\r\n\tfor (i = 0; i < noseLength; i += 1) {\r\n\t\r\n\t\t//1050 this.noseR[i] = this.noseJunctionOutputR[i] * this.fade; \r\n\t\tnoseR.poke(noseJunctionOutputR.peek(i), i);\r\n\t\r\n\t\t//1051 this.noseL[i] = this.noseJunctionOutputL[i+1] * this.fade;   \r\n\t\tnoseL.poke(noseJunctionOutputL.peek(i+1), i);\t\r\n\t}\r\n\r\n\tvocalOutput += R.peek(n - 1) + noseR.peek(noseLength-1);\r\n\t\t\r\n}\r\n\r\nout1 = vocalOutput;\r\n",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
@@ -339,7 +312,7 @@
 					"numinlets" : 5,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 27.0, 67.0, 456.0, 167.0 ]
+					"patching_rect" : [ 27.0, 67.0, 714.0, 214.0 ]
 				}
 
 			}
@@ -370,112 +343,54 @@
  ],
 		"lines" : [ 			{
 				"patchline" : 				{
-					"destination" : [ "obj-21", 0 ],
-					"order" : 0,
-					"source" : [ "obj-1", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-5", 0 ],
-					"order" : 1,
 					"source" : [ "obj-1", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-21", 3 ],
-					"order" : 0,
-					"source" : [ "obj-17", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-5", 3 ],
-					"order" : 1,
-					"source" : [ "obj-17", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-21", 1 ],
-					"order" : 0,
-					"source" : [ "obj-2", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-5", 1 ],
-					"order" : 1,
-					"source" : [ "obj-2", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-21", 4 ],
-					"order" : 0,
-					"source" : [ "obj-20", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-5", 4 ],
-					"order" : 1,
-					"source" : [ "obj-20", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-23", 1 ],
-					"source" : [ "obj-21", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-21", 2 ],
-					"source" : [ "obj-22", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-25", 0 ],
-					"source" : [ "obj-23", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-32", 0 ],
-					"source" : [ "obj-25", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-23", 0 ],
-					"source" : [ "obj-5", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-5", 2 ],
+					"source" : [ "obj-11", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 3 ],
+					"source" : [ "obj-17", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 1 ],
+					"source" : [ "obj-2", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 4 ],
+					"source" : [ "obj-20", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-7", 0 ],
+					"source" : [ "obj-5", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-32", 0 ],
 					"source" : [ "obj-7", 0 ]
 				}
 
 			}
- ],
-		"autosave" : 0
+ ]
 	}
 
 }
