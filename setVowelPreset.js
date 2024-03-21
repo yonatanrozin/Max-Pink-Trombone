@@ -1,4 +1,4 @@
-var diameter = new Buffer("diameter");
+var targetDiameter = new Buffer("targetDiameter");
 
 var vowels = {
 	a: "0.6 0.6 0.6 0.6 0.6 0.6 0.6 1.1 1.1 1.1 0.457008 0.347697 0.333333 0.347697 0.390434 0.460492 0.556147 0.675042 0.814251 0.970344 1.13948 1.317493 1.5 1.682507 1.86052 2.029656 2.185749 2.324958 2.443853 2.539508 2.609566 2.652303 2.666667 2.652303 2.609566 2.539508 2.443853 2.27546 2.0486 1.5 1.5 1.5 1.5 1.5",
@@ -6,16 +6,10 @@ var vowels = {
 	i: "0.6 0.6 0.6 0.6 0.6 0.6 0.6 1.1 1.1 1.1 2.583165 2.609566 2.539508 2.443853 2.324958 2.185749 2.029656 1.86052 1.682507 1.5 1.317493 1.13948 0.970344 0.814251 0.675042 0.556147 0.460492 0.390434 0.347697 0.333333 0.347697 0.390434 0.460492 0.556147 0.675042 0.814251 0.970344 1.161111 1.353994 1.5 1.5 1.5 1.5 1.5"
 }
 
-function list() {
-	for (var i in arguments) {
-		diameter.poke(0, Number(i), arguments[i]);
-	}
-}
-
 function setVowel(arg) {
 	if (vowels[arg]) {
 		var vowelData = vowels[arg].split(" ");
-		for (var i in vowelData) diameter.poke(0, Number(i), Number(vowelData[i]));
+		for (var i in vowelData) targetDiameter.poke(0, Number(i), Number(vowelData[i]));
 	}
 	else post("Invalid vowel: " + arg + "\n");
 }

@@ -1,4 +1,6 @@
 var TractParams = new Dict("TractParams");
+var AudioSystem = new Dict("AudioSystem");
+
 var diameter = new Buffer("diameter"); //
 var targetDiameter = new Buffer("targetDiameter");
 var restDiameter = new Buffer("restDiameter");
@@ -87,8 +89,7 @@ function init(n) {
 	calculateReflections();	
 	calculateNoseReflections();
 	
-	noseDiameter.poke(0, 0, TractParams.get("velumTarget"));
-	
+	noseDiameter.poke(0, 0, TractParams.get("velumTarget"));	
 }
 
 //958
@@ -130,7 +131,6 @@ function calculateReflections() {
 
     //this.newReflectionNose = (2*this.noseA[0]-sum)/sum;    
 	newReflectionLRN.poke(0, 2, (2 * noseA.peek(0, 0) - sum) / sum);
-   
 }
 
 //979
@@ -145,4 +145,35 @@ function calculateNoseReflections() {
 		//this.noseReflection[i] = (this.noseA[i-1]-this.noseA[i]) / (this.noseA[i-1]+this.noseA[i]); 
 		noseReflection.poke(0, i, (noseA.peek(0, i-1) - noseA.peek(0, i)) / ( noseA.peek(0, i-1) + noseA.peek(0, i)));
 	}
+}
+
+function finishBlock() {
+	reshapeTract();
+	calculateReflections();
+}
+
+//930
+function reshapeTract() {
+	var amount = 512/AudioSystem.get("sampleRate") * 15;
+	var noseStart = TractParams.get("noseStart");
+	var tipStart = TractParams.get("tipStart");
+	
+	for (var i = 0; i < TractParams.get("n"); i++) {
+		var d = diameter.peek(0, i);
+		var td = targetDiameter.peek(0, i);
+		
+		var slowReturn;
+		if (i < noseStart) slowReturn = 0.6;
+		else if (i >= tipStart) slowReturn = 1.0; 
+		else slowReturn = 0.6+0.4*(i-noseStart)/(tipStart-noseStart);
+		
+		this.diameter.poke(0, i, moveTowards(d, td, slowReturn*amount, 2*amount));
+
+	}
+}
+ 
+//80
+function moveTowards(current, target, amountUp, amountDown) {
+    if (current<target) return Math.min(current+amountUp, target);
+    else return Math.max(current-amountDown, target);
 }
