@@ -1,7 +1,7 @@
 # Max-Trombone
 A headless Max/MSP port of the fantastic [Pink Trombone](https://dood.al/pinktrombone/) vocal synthesizer.
 
-__This port is still incomplete! Glottis vibrato, fricative noise, transients, targetDiameter not yet implemented.__
+__This port is still incomplete! Transients not yet implemented.__
 
 ## Usage
 - Simply ```git clone``` this repo into a local folder of your choice
