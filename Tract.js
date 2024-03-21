@@ -25,6 +25,9 @@ var newReflectionLRN = new Buffer("newReflectionLRN");
 
 
 function init(n) {
+	
+	if (n < 32) n = 32;
+	if (n > 44) n = 44;
 		
 	//879-884
 	TractParams.set("n", n);
@@ -170,6 +173,23 @@ function reshapeTract() {
 		
 		this.diameter.poke(0, i, moveTowards(d, td, slowReturn*amount, 2*amount));
 	}
+}
+
+//1541
+function setRestDiameter(tIndex, tDiameter) {
+	var bladeStart = TractParams.get("bladeStart");
+	var lipStart = TractParams.get("lipStart");
+	var tipStart = TractParams.get("tipStart");
+		
+    for (var i = bladeStart; i < lipStart; i++) {
+        var t = 1.1 * Math.PI * (tIndex-i) / (tipStart-bladeStart);
+        var fixedTongueDiameter = 2 + (tDiameter-2) / 1.5;
+        var curve = (1.5 - fixedTongueDiameter + 1.7) * Math.cos(t); //gridoffset = 1.7
+        if (i == bladeStart-2 || i == lipStart-1) curve *= 0.8;
+        if (i == bladeStart || i == lipStart-2) curve *= 0.94;   
+
+        targetDiameter.poke(0, i, 1.5 - curve);
+    }
 }
  
 //80
