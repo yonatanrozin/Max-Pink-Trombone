@@ -26,7 +26,6 @@ var newReflectionLRN = new Buffer("newReflectionLRN");
 
 function init(n) {
 		
-		
 	//879-884
 	TractParams.set("n", n);
 	TractParams.set("bladeStart", Math.floor(10 * n/44));
@@ -154,21 +153,22 @@ function finishBlock() {
 
 //930
 function reshapeTract() {
-	var amount = 512/AudioSystem.get("sampleRate") * 15;
 	var noseStart = TractParams.get("noseStart");
 	var tipStart = TractParams.get("tipStart");
+	
+	var amount = 512/AudioSystem.get("sampleRate") * TractParams.get("movementSpeed");
+	//var newLastObstruction = -1;
 	
 	for (var i = 0; i < TractParams.get("n"); i++) {
 		var d = diameter.peek(0, i);
 		var td = targetDiameter.peek(0, i);
-		
+		//if (d <= 0) newLastObstruction = i;
 		var slowReturn;
 		if (i < noseStart) slowReturn = 0.6;
 		else if (i >= tipStart) slowReturn = 1.0; 
 		else slowReturn = 0.6+0.4*(i-noseStart)/(tipStart-noseStart);
 		
 		this.diameter.poke(0, i, moveTowards(d, td, slowReturn*amount, 2*amount));
-
 	}
 }
  
