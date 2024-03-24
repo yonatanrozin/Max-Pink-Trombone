@@ -1,5 +1,7 @@
-outlets = 1;
+inlets = 0;
+outlets = 2;
 setoutletassist(0, "Tongue index/diameter");
+setoutletassist(1, "Constriction index/diameter");
 
 mgraphics.init();
 mgraphics.relative_coords = 0;
@@ -36,6 +38,8 @@ var orchidColor = [218/255, 112/255, 214/255, 1];
 var palePinkColor = [255/255, 238/255, 245/255, 1];
 
 var tongueTouch = false;
+var cIndex = -1;
+var cDiameter = -1;
 
 var drawTask = new Task(function() {mgraphics.redraw()});
 drawTask.interval = 1000/60;
@@ -276,6 +280,7 @@ function onclick(x,y) {
 	var tongueUpperIndexBound = tractParams.get("tipStart") - 3;
 	var index = getIndex(x2, y2);
 	var diameter = getDiameter(x2, y2);
+	
 	tongueTouch = 
 		index >= tongueLowerIndexBound - 4 && index <= tongueUpperIndexBound + 4 && 
 		diameter >= innerTongueControlRadius - 0.5 && diameter <= outerTongueControlRadius + 0.5;
@@ -284,23 +289,32 @@ function onclick(x,y) {
 }
 
 function ondrag(x,y,button) {
-		
+			
 	if (button == 0) {
 		tongueTouch = false;
+		outlet(1, [-1,-1]);
 	}
-	
-	var tongueLowerIndexBound = tractParams.get("bladeStart") + 2;
-	var tongueUpperIndexBound = tractParams.get("tipStart") - 3;
-	var tongueIndexCentre = (tongueLowerIndexBound + tongueUpperIndexBound) / 2;
-	
-	var tipStart = tractParams.get("tipStart");
-
 	
 	x = x/cnvWidth * widthOrig;
 	y = y/cnvHeight * heightOrig;
 	
 	var index = getIndex(x,y);
 	var dia = getDiameter(x,y);
+	
+	handleTouch(index, dia, button);
+}
+
+function handleTouch(index, dia, button) {
+	
+	if (index == -1 || dia == -1) {
+		setRestDiameter();
+		return;
+	};
+	
+	var tongueLowerIndexBound = tractParams.get("bladeStart") + 2;
+	var tongueUpperIndexBound = tractParams.get("tipStart") - 3;
+	var tongueIndexCentre = (tongueLowerIndexBound + tongueUpperIndexBound) / 2;
+	var tipStart = tractParams.get("tipStart");
 	
 	//1577
 	if (tongueTouch) {
@@ -312,16 +326,15 @@ function ondrag(x,y,button) {
 			Math.max(innerTongueControlRadius, Math.min(dia, outerTongueControlRadius)));
 		var out = fromPoint * 0.5 * (tongueUpperIndexBound-tongueLowerIndexBound);
 		tractParams.set("tongueIndex", Math.max(tongueIndexCentre-out, Math.min(index, tongueIndexCentre+out)));
-		outlet(0, [
-			Number(tractParams.get("tongueIndex").toFixed(2)), 
-			Number(tractParams.get("tongueDiameter").toFixed(2))
-		]);
 	}
 	
 	setRestDiameter();
-	targetDiameter.poke(0, 0, restDiameter.peek(0, 0, 44));
 	
-	if (!button) return;
+	if (button) outlet(1, [
+		Number(index.toFixed(2)),
+		Number(dia.toFixed(2))
+	]);
+	else return;
 	
 	//1596
 	tractParams.set("velumTarget", 0.01);
@@ -368,6 +381,13 @@ function setRestDiameter() {
         if (i == bladeStart || i == lipStart-2) curve *= 0.94;               
         restDiameter.poke(0, i, 1.5 - curve);
     }
+	targetDiameter.poke(0, 0, restDiameter.peek(0, 0, 44));
+	
+	outlet(0, [
+		Number(tractParams.get("tongueIndex").toFixed(2)), 
+		Number(tractParams.get("tongueDiameter").toFixed(2))
+	]);
+
 }
 
 function getIndex(x,y) {
@@ -382,6 +402,26 @@ function getDiameter(x,y) {
 	var xx = x-originX; 
 	var yy = y-originY;
     return (radius-Math.sqrt(xx*xx + yy*yy)) / UIScale;
+}
+
+function tongueIndex(val) {
+	tractParams.set("tongueIndex", val);
+	setRestDiameter();
+}
+
+function tongueDiameter(val) {
+	tractParams.set("tongueDiameter", val);
+	setRestDiameter();
+}
+
+function constrictionIndex(val) {
+	cIndex = val;
+	handleTouch(cIndex, cDiameter, 1);
+}
+
+function constrictionDiameter(val) {
+	cDiameter = val;
+	handleTouch(cIndex, cDiameter, 1);
 }
 
 function onresize() {

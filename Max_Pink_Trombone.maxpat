@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 76.0, 1373.0, 743.0 ],
+		"rect" : [ 34.0, 76.0, 1067.0, 743.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -40,14 +40,168 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-18",
-					"linecount" : 2,
+					"id" : "obj-47",
 					"maxclass" : "message",
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 846.0, 426.0, 50.0, 36.0 ],
-					"text" : "17.93 2.62"
+					"patching_rect" : [ 733.82351541519165, 238.97058367729187, 29.5, 22.0 ],
+					"text" : "-1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-35",
+					"maxclass" : "live.dial",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "float" ],
+					"parameter_enable" : 1,
+					"patching_rect" : [ 643.382340669631958, 184.558820009231567, 52.941174924373627, 48.0 ],
+					"saved_attribute_attributes" : 					{
+						"valueof" : 						{
+							"parameter_longname" : "Tongue Diameter",
+							"parameter_mmax" : 3.5,
+							"parameter_mmin" : 2.05,
+							"parameter_modmode" : 3,
+							"parameter_shortname" : "T_Diameter",
+							"parameter_steps" : 100,
+							"parameter_type" : 0,
+							"parameter_unitstyle" : 1
+						}
+
+					}
+,
+					"varname" : "live.dial[2]"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-37",
+					"maxclass" : "live.dial",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "float" ],
+					"parameter_enable" : 1,
+					"patching_rect" : [ 597.058812141418457, 184.558820009231567, 41.0, 48.0 ],
+					"saved_attribute_attributes" : 					{
+						"valueof" : 						{
+							"parameter_longname" : "Tongue Index",
+							"parameter_mmax" : 34.0,
+							"parameter_mmin" : 10.0,
+							"parameter_modmode" : 3,
+							"parameter_shortname" : "T_Index",
+							"parameter_steps" : 100,
+							"parameter_type" : 0,
+							"parameter_unitstyle" : 1
+						}
+
+					}
+,
+					"varname" : "live.dial[3]"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-39",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 684.558810472488403, 331.617640733718872, 111.0, 22.0 ],
+					"text" : "tongueDiameter $1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-40",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 666.911751985549927, 355.147052049636841, 91.0, 22.0 ],
+					"text" : "tongueIndex $1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-34",
+					"maxclass" : "live.dial",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "float" ],
+					"parameter_enable" : 1,
+					"patching_rect" : [ 748.529397487640381, 184.558820009231567, 62.566843092441559, 48.0 ],
+					"saved_attribute_attributes" : 					{
+						"valueof" : 						{
+							"parameter_longname" : "Constriction Diameter",
+							"parameter_mmax" : 2.0,
+							"parameter_modmode" : 3,
+							"parameter_shortname" : "C_Diameter",
+							"parameter_steps" : 100,
+							"parameter_type" : 0,
+							"parameter_unitstyle" : 1
+						}
+
+					}
+,
+					"varname" : "live.dial[1]"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-30",
+					"maxclass" : "live.dial",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "float" ],
+					"parameter_enable" : 1,
+					"patching_rect" : [ 702.941163063049316, 184.558820009231567, 41.0, 48.0 ],
+					"saved_attribute_attributes" : 					{
+						"valueof" : 						{
+							"parameter_longname" : "Constriction Index",
+							"parameter_mmax" : 44.0,
+							"parameter_modmode" : 3,
+							"parameter_shortname" : "C_Index",
+							"parameter_steps" : 100,
+							"parameter_type" : 0,
+							"parameter_unitstyle" : 1
+						}
+
+					}
+,
+					"varname" : "live.dial"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-27",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 720.588221549987793, 283.823523998260498, 135.0, 22.0 ],
+					"presentation_linecount" : 2,
+					"text" : "constrictionDiameter $1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-25",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 702.941163063049316, 307.352935314178467, 115.0, 22.0 ],
+					"text" : "constrictionIndex $1"
 				}
 
 			}
@@ -70,10 +224,10 @@
 					"id" : "obj-10",
 					"maxclass" : "jsui",
 					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 877.0, 108.0, 321.0, 302.0 ]
+					"patching_rect" : [ 881.617630243301392, 103.67646861076355, 321.0, 302.0 ]
 				}
 
 			}
@@ -83,7 +237,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 271.157861948013306, 34.558821439743042, 150.0, 20.0 ],
+					"patching_rect" : [ 45.588234424591064, 34.558821439743042, 150.0, 20.0 ],
 					"text" : "MIDI pitch/intensity control"
 				}
 
@@ -209,7 +363,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 156.153836846351624, 220.769217610359192, 29.5, 22.0 ],
+					"patching_rect" : [ 145.454535484313965, 201.600003004074097, 29.5, 22.0 ],
 					"text" : "$2"
 				}
 
@@ -221,7 +375,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 124.615377187728882, 220.769217610359192, 29.5, 22.0 ],
+					"patching_rect" : [ 111.454535484313965, 201.600003004074097, 29.5, 22.0 ],
 					"text" : "$1"
 				}
 
@@ -233,7 +387,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 8,
 					"outlettype" : [ "", "", "", "int", "int", "", "int", "" ],
-					"patching_rect" : [ 124.615377187728882, 181.538450717926025, 92.5, 22.0 ],
+					"patching_rect" : [ 111.454535484313965, 162.400002419948578, 92.5, 22.0 ],
 					"text" : "midiparse"
 				}
 
@@ -245,7 +399,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 124.5, 137.692299485206604, 40.0, 22.0 ],
+					"patching_rect" : [ 111.454535484313965, 118.400001764297485, 40.0, 22.0 ],
 					"text" : "midiin"
 				}
 
@@ -1728,13 +1882,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-18", 1 ],
-					"source" : [ "obj-10", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-36", 1 ],
 					"source" : [ "obj-11", 1 ]
 				}
@@ -1798,8 +1945,22 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-10", 0 ],
+					"source" : [ "obj-25", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-17", 0 ],
 					"source" : [ "obj-26", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-10", 0 ],
+					"source" : [ "obj-27", 0 ]
 				}
 
 			}
@@ -1819,8 +1980,29 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-25", 0 ],
+					"source" : [ "obj-30", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-11", 1 ],
 					"source" : [ "obj-32", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-27", 0 ],
+					"source" : [ "obj-34", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-39", 0 ],
+					"source" : [ "obj-35", 0 ]
 				}
 
 			}
@@ -1842,8 +2024,45 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-40", 0 ],
+					"source" : [ "obj-37", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-10", 0 ],
+					"source" : [ "obj-39", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-7", 0 ],
 					"source" : [ "obj-4", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-10", 0 ],
+					"source" : [ "obj-40", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-25", 0 ],
+					"order" : 1,
+					"source" : [ "obj-47", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-27", 0 ],
+					"order" : 0,
+					"source" : [ "obj-47", 0 ]
 				}
 
 			}
@@ -1899,6 +2118,23 @@
 
 			}
  ],
+		"parameters" : 		{
+			"obj-30" : [ "Constriction Index", "C_Index", 0 ],
+			"obj-34" : [ "Constriction Diameter", "C_Diameter", 0 ],
+			"obj-35" : [ "Tongue Diameter", "T_Diameter", 0 ],
+			"obj-37" : [ "Tongue Index", "T_Index", 0 ],
+			"parameterbanks" : 			{
+				"0" : 				{
+					"index" : 0,
+					"name" : "",
+					"parameters" : [ "-", "-", "-", "-", "-", "-", "-", "-" ]
+				}
+
+			}
+,
+			"inherited_shortname" : 1
+		}
+,
 		"dependency_cache" : [ 			{
 				"name" : "Glottis.js",
 				"bootpath" : "~/Projects/Max-Pink-Trombone",
