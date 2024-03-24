@@ -28,4 +28,4 @@ __This port is still incomplete! Transients not yet implemented.__
   - ```tongue <float> <float>``` moves the "tongue".
  
 ## Notice
-This patch is based heavily on the original [Pink Trombone](https://dood.al/pinktrombone/), created by Neil Thapen and released under the [MIT License].
+This patch is based heavily on the original [Pink Trombone](https://dood.al/pinktrombone/), created by Neil Thapen and released under the [MIT License](https://opensource.org/license/mit).
