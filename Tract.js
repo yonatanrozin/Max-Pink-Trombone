@@ -12,6 +12,8 @@ var junctionOutputR = new Buffer("junctionOutputR");
 var junctionOutputL = new Buffer("junctionOutputL");
 var A = new Buffer("A");
 
+var transients = new Buffer("transients");
+
 var noseR = new Buffer("noseR");
 var noseL = new Buffer("noseL");
 var noseJunctionOutputR = new Buffer("noseJunctionOutputR");
@@ -23,6 +25,7 @@ var noseA = new Buffer("noseA");
 var reflectionLRN = new Buffer("reflectionLRN");
 var newReflectionLRN = new Buffer("newReflectionLRN");
 
+var lastObstruction = -1;
 
 function init(n) {
 	
@@ -160,12 +163,12 @@ function reshapeTract() {
 	var tipStart = TractParams.get("tipStart");
 	
 	var amount = 512/AudioSystem.get("sampleRate") * TractParams.get("movementSpeed");
-	//var newLastObstruction = -1;
+	var newLastObstruction = -1;
 	
 	for (var i = 0; i < TractParams.get("n"); i++) {
 		var d = diameter.peek(0, i);
 		var td = targetDiameter.peek(0, i);
-		//if (d <= 0) newLastObstruction = i;
+		if (d <= 0) newLastObstruction = i;
 		var slowReturn;
 		if (i < noseStart) slowReturn = 0.6;
 		else if (i >= tipStart) slowReturn = 1.0; 
@@ -173,10 +176,22 @@ function reshapeTract() {
 		
 		this.diameter.poke(0, i, moveTowards(d, td, slowReturn*amount, 2*amount));
 	}
+	
+	if (lastObstruction > -1 && newLastObstruction == -1 && noseA.peek(0, 0) < 0.05) {
+		transients.poke(0, lastObstruction, .2);
+	}
+	lastObstruction = newLastObstruction;	
+	
+	noseDiameter.poke(0, 0, moveTowards(noseDiameter.peek(0, 0), TractParams.get("velumTarget"), 
+        amount*0.25, amount*0.1));
+	noseA.poke(0, 0, Math.pow(noseDiameter.peek(0,0), 2)); 
 }
 
 //1541
 function setRestDiameter(tIndex, tDiameter) {
+	TractParams.set("tongueIndex", tIndex);
+	TractParams.set("tongueDiameter", tDiameter);
+	
 	var bladeStart = TractParams.get("bladeStart");
 	var lipStart = TractParams.get("lipStart");
 	var tipStart = TractParams.get("tipStart");
@@ -188,8 +203,9 @@ function setRestDiameter(tIndex, tDiameter) {
         if (i == bladeStart-2 || i == lipStart-1) curve *= 0.8;
         if (i == bladeStart || i == lipStart-2) curve *= 0.94;   
 
-        targetDiameter.poke(0, i, 1.5 - curve);
+        restDiameter.poke(0, i, 1.5 - curve);
     }
+	targetDiameter.poke(0, 0, restDiameter.peek(0, 0, 44));
 }
  
 //80

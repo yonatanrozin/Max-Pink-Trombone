@@ -5,6 +5,9 @@
 	"lipStart" : 39,
 	"noseLength" : 28,
 	"noseStart" : 17,
-	"velumTarget" : 0.01,
-	"movementSpeed" : 15
+	"velumTarget" : 0.4,
+	"movementSpeed" : 15,
+	"tongueIndex" : 22.967892989337916,
+	"tongueDiameter" : 2.601130589246522
+
 }
