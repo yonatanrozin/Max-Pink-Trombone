@@ -7,9 +7,8 @@ __This port is still incomplete! Transients not yet implemented.__
 - Simply ```git clone``` this repo into a local folder of your choice
 - "root" patch is [```Max_Trombone.maxpat```](https://github.com/yonatanrozin/Max-Trombone/blob/main/Max_Trombone.maxpat). Simply open it and enable audio or incorporate it into an existing patch!
 - Use the [kslider] or [pictslider] at the top to manipulate the pitch and intensity of the generated voice. This will behave identically to the horizontal "keyboard" at the bottom of the original Pink Trombone interface.
-- Use the second [pictslider] below to move the "tongue", similar to the triangular "tongue control" section in the original Pink Trombone interface. The top-left corner, top-right corner and center-bottom correspond to the 3 corners in the original interface, and will affect the outputted voice identically.
-  - 3 tongue value presets are provided in message objects near the pictslider.
-- Alternatively, manipulate the tract diameters array by clicking around the [waveform] object. This will create value sets that are not producible in the original Pink Trombone interface and not naturally reproducible in the human mouth, which may lead to unnatural-sounding voice timbres.
+- The original GUI has been re-created in the [jsui] object, and can be interacted with identically with the mouse.
+- Alternatively, manipulate the tract diameters array directly by clicking around the [waveform] object or by manually writing values to [buffer~ targetDiameter]. This will create value sets that are not producible in the original Pink Trombone interface and not naturally reproducible in the human mouth, which may lead to unnatural-sounding voice timbres.
 
 ## Patch details
 ### [p Glottis]
