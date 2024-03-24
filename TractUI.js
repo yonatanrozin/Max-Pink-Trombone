@@ -1,4 +1,5 @@
-//TODO: scale circle radiuses + line widths with box size
+outlets = 1;
+setoutletassist(0, "Tongue index/diameter");
 
 mgraphics.init();
 mgraphics.relative_coords = 0;
@@ -185,8 +186,6 @@ function drawTongueControl() {
 		set_font_size(17 * cnvAreaScale);
 		drawText(tractParams.get("n") * 0.18, 3, "tongue control", true);   
 
-
-
 	}
 }
 
@@ -307,12 +306,16 @@ function ondrag(x,y,button) {
 	if (tongueTouch) {
 		var fromPoint = (outerTongueControlRadius - dia) / 
 			(outerTongueControlRadius - innerTongueControlRadius);
-			fromPoint = Math.max(0, Math.min(fromPoint, 1));
-			fromPoint = Math.pow(fromPoint, 0.58) - 0.2*(fromPoint*fromPoint-fromPoint);
-			tractParams.set("tongueDiameter", 
-				Math.max(innerTongueControlRadius, Math.min(dia, outerTongueControlRadius)));
-			var out = fromPoint * 0.5 * (tongueUpperIndexBound-tongueLowerIndexBound);
-			tractParams.set("tongueIndex", Math.max(tongueIndexCentre-out, Math.min(index, tongueIndexCentre+out)));
+		fromPoint = Math.max(0, Math.min(fromPoint, 1));
+		fromPoint = Math.pow(fromPoint, 0.58) - 0.2*(fromPoint*fromPoint-fromPoint);
+		tractParams.set("tongueDiameter", 
+			Math.max(innerTongueControlRadius, Math.min(dia, outerTongueControlRadius)));
+		var out = fromPoint * 0.5 * (tongueUpperIndexBound-tongueLowerIndexBound);
+		tractParams.set("tongueIndex", Math.max(tongueIndexCentre-out, Math.min(index, tongueIndexCentre+out)));
+		outlet(0, [
+			Number(tractParams.get("tongueIndex").toFixed(2)), 
+			Number(tractParams.get("tongueDiameter").toFixed(2))
+		]);
 	}
 	
 	setRestDiameter();

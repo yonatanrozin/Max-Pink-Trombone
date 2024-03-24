@@ -40,6 +40,19 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-18",
+					"linecount" : 2,
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 846.0, 426.0, 50.0, 36.0 ],
+					"text" : "17.93 2.62"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-9",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
@@ -60,7 +73,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 496.0, 171.0, 321.0, 302.0 ]
+					"patching_rect" : [ 877.0, 108.0, 321.0, 302.0 ]
 				}
 
 			}
@@ -185,7 +198,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 378.157861948013306, 480.372858464717865, 243.0, 34.0 ],
-					"text" : "Tract diameters (draw with mouse or choose vowel preset from options above)"
+					"text" : "Tract diameters (draw with mouse or write values to buffer~ targetDiameter)"
 				}
 
 			}
@@ -1710,6 +1723,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-11", 0 ],
 					"source" : [ "obj-1", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-18", 1 ],
+					"source" : [ "obj-10", 0 ]
 				}
 
 			}
