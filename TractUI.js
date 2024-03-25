@@ -330,14 +330,15 @@ function handleTouch(index, dia, button) {
 	
 	setRestDiameter();
 	
+	//1596
+	tractParams.set("velumTarget", 0.01);
+	
 	if (button) outlet(1, [
 		Number(index.toFixed(2)),
 		Number(dia.toFixed(2))
 	]);
 	else return;
 	
-	//1596
-	tractParams.set("velumTarget", 0.01);
 	if (index > tractParams.get("noseStart") && dia < -noseOffset)
 		tractParams.set("velumTarget", 0.4);
 		
