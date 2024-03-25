@@ -28,9 +28,6 @@ var newReflectionLRN = new Buffer("newReflectionLRN");
 var lastObstruction = -1;
 
 function init(n) {
-	
-	if (n < 32) n = 32;
-	if (n > 44) n = 44;
 		
 	//879-884
 	TractParams.set("n", n);
