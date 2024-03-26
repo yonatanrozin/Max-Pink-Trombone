@@ -1,5 +1,5 @@
 # Max Pink Trombone
-A headless Max/MSP port of the fantastic [Pink Trombone](https://dood.al/pinktrombone/) vocal synthesizer.
+A Max/MSP port of the fantastic [Pink Trombone](https://dood.al/pinktrombone/) vocal synthesizer.
 
 ## Usage
 - ```git clone``` this repo into a local folder of your choice or download the ZIP file.
@@ -53,6 +53,11 @@ Pink Trombone uses many internal Float64Arrays in the calculation of audio sampl
 - Write values to ```[buffer~ targetDiameter]```. Observe in ```[jsui]``` how the current values ramp smoothly towards the new values.
 - Alternatively, write values to ```[buffer~ diameter]``` to set the current diameter values directly, with no ramp. __You must ALSO write the same values to targetDiameter or they'll just return to their previous values.__
 Be aware that setting diameter values directly may result in tract shapes that are neither achievable in the original Pink Trombone GUI, nor producible naturally in a human mouth. This may cause unnatural-sounding "speech" patterns, but will probably sound cool regardless.
+
+## Coming soon
+- Polyphony - manipulate multiple voices at once!
+- A tool for generating tongue/constriction sequences for speech automation
+- Max4Live?
 
 ## Notice
 This patch is based heavily and exclusively on the original [Pink Trombone](https://dood.al/pinktrombone/), created by Neil Thapen and released under the [MIT License](https://opensource.org/license/mit).
