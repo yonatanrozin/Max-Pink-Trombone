@@ -1,9 +1,14 @@
 # Max Pink Trombone
 A Max/MSP port of the fantastic [Pink Trombone](https://dood.al/pinktrombone/) vocal synthesizer.
 
-## Usage
+__Demo video coming soon!__
+
+## Installation
 - ```git clone``` this repo into a local folder of your choice or download the ZIP file.
 - The "main" patch is [```Max_Trombone.maxpat```](https://github.com/yonatanrozin/Max-Trombone/blob/main/Max_Trombone.maxpat). Simply open it and enable audio or incorporate it into an existing patch!
+
+## Usage
+_Recommended: view patcher in presentation mode to see only interactive objects._
 - Use the ```[kslider]``` or ```[pictslider]``` at the top to manipulate the pitch and intensity of the generated voice. This will behave identically to the horizontal "keyboard" at the bottom of the original Pink Trombone GUI. 
 - The patch will also accept MIDI note input through ```[midiIn]```. Make sure the object is listening on the correct channel!
 - The original GUI has been re-created in ```[jsui]```, and can be interacted with identically with the mouse to move the tongue and reshape the tract.
