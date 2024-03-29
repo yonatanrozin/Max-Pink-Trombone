@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "dsp.gen",
-		"rect" : [ 34.0, 76.0, 1373.0, 743.0 ],
+		"rect" : [ 134.0, 134.0, 1373.0, 743.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -39,6 +39,54 @@
 		"subpatcher_template" : "",
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-25",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 157.0, 37.0, 81.0, 22.0 ],
+					"text" : "scale 0 1 -1 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-24",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 157.0, 64.0, 119.0, 22.0 ],
+					"text" : "lookup fricativeNoise"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-13",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 157.0, 10.0, 65.0, 22.0 ],
+					"text" : "phasor 0.5"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-12",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 848.0, 54.0, 114.0, 22.0 ],
+					"text" : "buffer fricativeNoise"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"id" : "obj-23",
 					"maxclass" : "newobj",
@@ -82,19 +130,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 383.0, 25.0, 28.0, 22.0 ],
-					"text" : "in 3"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-12",
-					"maxclass" : "newobj",
-					"numinlets" : 0,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "" ],
-					"patching_rect" : [ 818.0, 172.0, 109.0, 22.0 ],
-					"text" : "buffer constrictions"
+					"text" : "in 2"
 				}
 
 			}
@@ -105,7 +141,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 27.0, 653.0, 22.0, 22.0 ],
+					"patching_rect" : [ 27.0, 717.0, 22.0, 22.0 ],
 					"text" : "/ 8"
 				}
 
@@ -200,7 +236,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 27.0, 686.0, 25.0, 22.0 ],
+					"patching_rect" : [ 27.0, 750.0, 25.0, 22.0 ],
 					"text" : "out"
 				}
 
@@ -327,7 +363,7 @@
 			}
 , 			{
 				"box" : 				{
-					"code" : "//551\r\nglottalOutput = in1;\r\nnoiseModulator = in2;\r\nturbulenceNoise = in3;\r\nn = in4;\r\nnoseLength = in5;\r\nnoseStart = n - noseLength + 1;\r\n\r\nif (noiseModulator == 0) noiseModulator = .25;\r\n\r\nvocalOutput = 0;\r\n\r\nfor (lambda = 0; lambda <= 0.5; lambda += 0.5) {\r\n\t\r\n\t//processTransients()\r\n\t//transients buffer sample indexes are tract diameter indexes\r\n\t//sample values are remaining time (if any) of transient at that index\r\n\t//(current time alive = lifetime - sample value)\r\n\tfor (i = 0; i < n; i+= 1) {\r\n\t\tval = transients.peek(i);\r\n\t\tif (transients.peek(i) > 0) {\r\n\t\t\tamplitude = 0.3 * pow(2, -200 * (0.2 - val));\r\n\t\t\tR.poke(R.peek(i) + amplitude/2, i);\r\n\t\t\tL.poke(L.peek(i) + amplitude/2, i);\r\n\t\t\ttransients.poke(transients.peek(i) - 1.0/(samplerate*2), i);\r\n\t\t}\r\n\t}\r\n\t\r\n\t//addTurbulenceNoise replacement\r\n\t//since there's no UI, get index/diameter of constriction using\r\n\t//locations/heights of \"valleys\" in diameter values\r\n\tfor (i = 1; i < 43; i+= 1) {\r\n\t\td = diameter.peek(i);\r\n\t\tif (d < diameter.peek(i-1) && d < diameter.peek(i+1) && d > 0 &&\r\n\t\t\trestDiameter.peek(i) != targetDiameter.peek(i)) {\r\n\t\t\t\t\r\n\t\t\td += 0.3; \r\n\t\t\t\r\n\t\t\t//\"addTurbulenceNoiseAtIndex()\"\r\n\t\t\t//index = i; diameter = d, intensity = 1 (reevaluate?)\r\n\t\t\t//1119\r\n\t\t\tnoise = 0.66 * turbulenceNoise * noiseModulator;\r\n\t\t\t\r\n\t\t\tthinness0 = clamp(8 * (0.7 - d), 0, 1);\r\n\t\t\topenness = clamp(30 * (d - 0.3), 0, 1);\r\n\t\t\tnoise0 = noise * thinness0 * openness;\r\n\t\t\t\r\n\t\t\tR.poke(R.peek(i+1) + noise0/2, i+1);\r\n\t\t\tL.poke(L.peek(i+1) + noise0/2, i+1);\t\r\n\t\t}\r\n\t}\r\n\t\r\n\t\r\n\t\r\n\t//1000 this.junctionOutputR[0] = this.L[0] * this.glottalReflection + glottalOutput;\r\n\tjunctionOutputR.poke(L.peek(0) * 0.75 + glottalOutput, 0);\r\n\r\n\t//1001 this.junctionOutputL[this.n] = this.R[this.n-1] * this.lipReflection; \r\n\tjunctionOutputL.poke(R.peek(n-1) * -0.85, n);\r\n\r\n\tfor (i = 1; i < n; i += 1) { //1003\r\n\t\r\n\t\t//1005 var r = this.reflection[i] * (1-lambda) + this.newReflection[i]*lambda;\r\n\t\tr = reflection.peek(i) * (1-lambda) + newReflection.peek(i) * lambda;\r\n\t\r\n\t\t//1006 var w = r * (this.R[i-1] + this.L[i]);\r\n\t\tw = r * (R.peek(i-1) + L.peek(i));\r\n\t\r\n\t\t//1007 this.junctionOutputR[i] = this.R[i-1] - w;\r\n\t\tjunctionOutputR.poke(R.peek(i-1) - w, i);\r\n\t\r\n\t\t//1008 this.junctionOutputL[i] = this.L[i] + w;\r\n\t\tjunctionOutputL.poke(L.peek(i) + w, i);\r\n\t}\r\n\r\n\ti = noseStart;\r\n\r\n\t//1013 var r = this.newReflectionLeft * (1-lambda) + this.reflectionLeft*lambda;\r\n\tr = newReflectionLRN.peek(0) * (1-lambda) + reflectionLRN.peek(0) * lambda;\r\n\r\n\t//1014 this.junctionOutputL[i] = r*this.R[i-1]+(1+r)*(this.noseL[0]+this.L[i]);\r\n\tjunctionOutputL.poke(r * R.peek(i-1) + (1+r) * (noseL.peek(0) + L.peek(i)), i);\r\n\r\n\t//1015 r = this.newReflectionRight * (1-lambda) + this.reflectionRight*lambda;\r\n\tr = newReflectionLRN.peek(1) * (1-lambda) + reflectionLRN.peek(1) * lambda;\r\n\r\n\t//1016 this.junctionOutputR[i] = r*this.L[i]+(1+r)*(this.R[i-1]+this.noseL[0]);     \r\n\tjunctionOutputR.poke(r * L.peek(i) + (1+r) * (R.peek(i-1) + noseL.peek(0)), i);\r\n\r\n\t//1017 r = this.newReflectionNose * (1-lambda) + this.reflectionNose*lambda;\r\n\tr = newReflectionLRN.peek(2) * (1-lambda) + reflectionLRN.peek(2) * lambda;\r\n\r\n\t//1018 this.noseJunctionOutputR[0] = r*this.noseL[0]+(1+r)*(this.L[i]+this.R[i-1]);\r\n\tnoseJunctionOutputR.poke(r * noseL.peek(0) + (1+r) * (L.peek(i) + R.peek(i-1)), 0);\r\n\r\n\tfor (i = 0; i < n; i += 1) { //1019\r\n\t\r\n\t\t//1021 this.R[i] = this.junctionOutputR[i]*0.999;\r\n\t\tR.poke(junctionOutputR.peek(i) * 0.999, i);\r\n\t\r\n    \t//1022 this.L[i] = this.junctionOutputL[i+1]*0.999; \r\n\t\tL.poke(junctionOutputL.peek(i+1) * 0.999, i);\r\n\t}\r\n\r\n\r\n\t//1039 this.noseJunctionOutputL[this.noseLength] = this.noseR[this.noseLength-1] * this.lipReflection; \r\n\tnoseJunctionOutputL.poke(noseR.peek(noseLength - 1) * -0.85, noseLength);\r\n\r\n\tfor (i = 1; i < noseLength; i += 1) {\r\n\t\t//1043 var w = this.noseReflection[i] * (this.noseR[i-1] + this.noseL[i]);\r\n\t\tw = noseReflection.peek(i) * (noseR.peek(i-1) + noseL.peek(i));\r\n\t\r\n\t\t//1044 this.noseJunctionOutputR[i] = this.noseR[i-1] - w;\r\n\t\tnoseJunctionOutputR.poke(noseR.peek(i-1) - w, i);\r\n\t\r\n\t\t//1045 this.noseJunctionOutputL[i] = this.noseL[i] + w;\r\n\t\tnoseJunctionOutputL.poke(noseL.peek(i) + w, i);\r\n\t}\r\n\r\n\tfor (i = 0; i < noseLength; i += 1) {\r\n\t\r\n\t\t//1050 this.noseR[i] = this.noseJunctionOutputR[i] * this.fade; \r\n\t\tnoseR.poke(noseJunctionOutputR.peek(i), i);\r\n\t\r\n\t\t//1051 this.noseL[i] = this.noseJunctionOutputL[i+1] * this.fade;   \r\n\t\tnoseL.poke(noseJunctionOutputL.peek(i+1), i);\t\r\n\t}\r\n\r\n\tvocalOutput += R.peek(n - 1) + noseR.peek(noseLength-1);\r\n\t\t\r\n}\r\n\r\nout1 = vocalOutput;\r\n",
+					"code" : "//551\r\nglottalOutput = in1;\r\nturbulenceNoise = in2;\r\nnoiseModulator = in3;\r\n\r\nn = in4;\r\nnoseLength = in5;\r\nnoseStart = n - noseLength + 1;\r\n\r\nif (noiseModulator == 0) noiseModulator = .25;\r\n\r\nvocalOutput = 0;\r\n\r\nfor (lambda = 0; lambda <= 0.5; lambda += 0.5) {\r\n\t\r\n\t//processTransients()\r\n\t//transients buffer sample indexes are tract diameter indexes\r\n\t//sample values are remaining time (if any) of transient at that index\r\n\t//(current time alive = lifetime - sample value)\r\n\tfor (i = 0; i < n; i+= 1) {\r\n\t\tval = transients.peek(i);\r\n\t\tif (transients.peek(i) > 0) {\r\n\t\t\tamplitude = 0.3 * pow(2, -200 * (0.2 - val));\r\n\t\t\tR.poke(R.peek(i) + amplitude/2, i);\r\n\t\t\tL.poke(L.peek(i) + amplitude/2, i);\r\n\t\t\ttransients.poke(transients.peek(i) - 1.0/(samplerate*2), i);\r\n\t\t}\r\n\t}\r\n\t\r\n\t//addTurbulenceNoise replacement\r\n\t//since there's no UI, get index/diameter of constriction using\r\n\t//locations/heights of \"valleys\" in diameter values\r\n\tfor (i = 1; i < 43; i+= 1) {\r\n\t\td = diameter.peek(i);\r\n\t\tif (d < diameter.peek(i-1) && d < diameter.peek(i+1) && d > 0 &&\r\n\t\t\trestDiameter.peek(i) != targetDiameter.peek(i)) {\r\n\t\t\t\t\r\n\t\t\td += 0.3; \r\n\t\t\t\r\n\t\t\t//\"addTurbulenceNoiseAtIndex()\"\r\n\t\t\t//index = i; diameter = d, intensity = 1 (reevaluate?)\r\n\t\t\t//1119\r\n\t\t\tnoise = 0.66 * turbulenceNoise * noiseModulator;\r\n\t\t\t\r\n\t\t\tthinness0 = clamp(8 * (0.7 - d), 0, 1);\r\n\t\t\topenness = clamp(30 * (d - 0.3), 0, 1);\r\n\t\t\tnoise0 = noise * thinness0 * openness;\r\n\t\t\t\r\n\t\t\tR.poke(R.peek(i+1) + noise0/2, i+1);\r\n\t\t\tL.poke(L.peek(i+1) + noise0/2, i+1);\t\r\n\t\t}\r\n\t}\r\n\t\r\n\t\r\n\t\r\n\t//1000 this.junctionOutputR[0] = this.L[0] * this.glottalReflection + glottalOutput;\r\n\tjunctionOutputR.poke(L.peek(0) * 0.75 + glottalOutput, 0);\r\n\r\n\t//1001 this.junctionOutputL[this.n] = this.R[this.n-1] * this.lipReflection; \r\n\tjunctionOutputL.poke(R.peek(n-1) * -0.85, n);\r\n\r\n\tfor (i = 1; i < n; i += 1) { //1003\r\n\t\r\n\t\t//1005 var r = this.reflection[i] * (1-lambda) + this.newReflection[i]*lambda;\r\n\t\tr = reflection.peek(i) * (1-lambda) + newReflection.peek(i) * lambda;\r\n\t\r\n\t\t//1006 var w = r * (this.R[i-1] + this.L[i]);\r\n\t\tw = r * (R.peek(i-1) + L.peek(i));\r\n\t\r\n\t\t//1007 this.junctionOutputR[i] = this.R[i-1] - w;\r\n\t\tjunctionOutputR.poke(R.peek(i-1) - w, i);\r\n\t\r\n\t\t//1008 this.junctionOutputL[i] = this.L[i] + w;\r\n\t\tjunctionOutputL.poke(L.peek(i) + w, i);\r\n\t}\r\n\r\n\ti = noseStart;\r\n\r\n\t//1013 var r = this.newReflectionLeft * (1-lambda) + this.reflectionLeft*lambda;\r\n\tr = newReflectionLRN.peek(0) * (1-lambda) + reflectionLRN.peek(0) * lambda;\r\n\r\n\t//1014 this.junctionOutputL[i] = r*this.R[i-1]+(1+r)*(this.noseL[0]+this.L[i]);\r\n\tjunctionOutputL.poke(r * R.peek(i-1) + (1+r) * (noseL.peek(0) + L.peek(i)), i);\r\n\r\n\t//1015 r = this.newReflectionRight * (1-lambda) + this.reflectionRight*lambda;\r\n\tr = newReflectionLRN.peek(1) * (1-lambda) + reflectionLRN.peek(1) * lambda;\r\n\r\n\t//1016 this.junctionOutputR[i] = r*this.L[i]+(1+r)*(this.R[i-1]+this.noseL[0]);     \r\n\tjunctionOutputR.poke(r * L.peek(i) + (1+r) * (R.peek(i-1) + noseL.peek(0)), i);\r\n\r\n\t//1017 r = this.newReflectionNose * (1-lambda) + this.reflectionNose*lambda;\r\n\tr = newReflectionLRN.peek(2) * (1-lambda) + reflectionLRN.peek(2) * lambda;\r\n\r\n\t//1018 this.noseJunctionOutputR[0] = r*this.noseL[0]+(1+r)*(this.L[i]+this.R[i-1]);\r\n\tnoseJunctionOutputR.poke(r * noseL.peek(0) + (1+r) * (L.peek(i) + R.peek(i-1)), 0);\r\n\r\n\tfor (i = 0; i < n; i += 1) { //1019\r\n\t\r\n\t\t//1021 this.R[i] = this.junctionOutputR[i]*0.999;\r\n\t\tR.poke(junctionOutputR.peek(i) * 0.999, i);\r\n\t\r\n    \t//1022 this.L[i] = this.junctionOutputL[i+1]*0.999; \r\n\t\tL.poke(junctionOutputL.peek(i+1) * 0.999, i);\r\n\t}\r\n\r\n\r\n\t//1039 this.noseJunctionOutputL[this.noseLength] = this.noseR[this.noseLength-1] * this.lipReflection; \r\n\tnoseJunctionOutputL.poke(noseR.peek(noseLength - 1) * -0.85, noseLength);\r\n\r\n\tfor (i = 1; i < noseLength; i += 1) {\r\n\t\t//1043 var w = this.noseReflection[i] * (this.noseR[i-1] + this.noseL[i]);\r\n\t\tw = noseReflection.peek(i) * (noseR.peek(i-1) + noseL.peek(i));\r\n\t\r\n\t\t//1044 this.noseJunctionOutputR[i] = this.noseR[i-1] - w;\r\n\t\tnoseJunctionOutputR.poke(noseR.peek(i-1) - w, i);\r\n\t\r\n\t\t//1045 this.noseJunctionOutputL[i] = this.noseL[i] + w;\r\n\t\tnoseJunctionOutputL.poke(noseL.peek(i) + w, i);\r\n\t}\r\n\r\n\tfor (i = 0; i < noseLength; i += 1) {\r\n\t\r\n\t\t//1050 this.noseR[i] = this.noseJunctionOutputR[i] * this.fade; \r\n\t\tnoseR.poke(noseJunctionOutputR.peek(i), i);\r\n\t\r\n\t\t//1051 this.noseL[i] = this.noseJunctionOutputL[i+1] * this.fade;   \r\n\t\tnoseL.poke(noseJunctionOutputL.peek(i+1), i);\t\r\n\t}\r\n\r\n\tvocalOutput += R.peek(n - 1) + noseR.peek(noseLength-1);\r\n\t\t\r\n}\r\n\r\nout1 = vocalOutput;",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
@@ -336,7 +372,7 @@
 					"numinlets" : 5,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 27.0, 67.0, 775.0, 566.0 ]
+					"patching_rect" : [ 27.0, 139.0, 775.0, 566.0 ]
 				}
 
 			}
@@ -349,18 +385,6 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 38.0, 22.0, 28.0, 22.0 ],
 					"text" : "in 1"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-2",
-					"maxclass" : "newobj",
-					"numinlets" : 0,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 176.333333333333343, 22.0, 28.0, 22.0 ],
-					"text" : "in 2"
 				}
 
 			}
@@ -381,6 +405,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-25", 0 ],
+					"source" : [ "obj-13", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-5", 3 ],
 					"source" : [ "obj-17", 0 ]
 				}
@@ -388,15 +419,22 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-5", 1 ],
-					"source" : [ "obj-2", 0 ]
+					"destination" : [ "obj-5", 4 ],
+					"source" : [ "obj-20", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-5", 4 ],
-					"source" : [ "obj-20", 0 ]
+					"destination" : [ "obj-5", 1 ],
+					"source" : [ "obj-24", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-24", 0 ],
+					"source" : [ "obj-25", 0 ]
 				}
 
 			}

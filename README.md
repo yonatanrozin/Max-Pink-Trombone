@@ -22,13 +22,11 @@ The Glottis produces a raw "glottal source": the sound produced by the human voc
   - Modulate the signal (probably with a sine wave) to create vibrato effects.
   - Input a message ```tenseness <float 0-1>``` to adjust the voice tenseness, a timbral property between an unpitched whisper and a harsh, strained sound. A "natural" speaking voice is around 0.6, but it may vary depending on the voice frequency.
   - Input a message ```intensity <float 0-1>``` to adjust the voice intensity (volume).
-- Inlet 2 (signal) connects to the Max equivalent of the "aspiration filter", which produces filtered white noise used to simulate the sound of breath in low-tenseness voices. 
-  - This filter is recreated in Max using ```[noise~] -> [/~ 2] -> [reson~ 1 500 0.5]```.
 - Outlet 1 (signal) outputs the raw glottal source, without aspiration.
   - Optionally, route this signal through an EQ (or some other effect/filter?) to create voices with different timbres (feminine voices, etc).
   - Alternatively, you may choose to use a different audio source entirely and leave this outlet unconnected.
-- Outlet 2 (signal) is aspiration noise resulting from low tenseness values. You'll typically add this signal to the glottal source before routing to the tract. Alternatively, you may choose to use only the aspiration signal and replace the glottal source with any other audio source to make it "talk".
-- Outlet 3 (signal) is a noise modulator value which should be connected directly to inlet 2 of ```[gen~ tract_processor]```.
+- Outlet 2 (signal) outputs aspiration noise resulting from low tenseness values. You'll typically add this signal to the glottal source before routing to the tract. Alternatively, you may choose to use only the aspiration signal and replace the glottal source with any other audio source to make it "talk".
+- Outlet 3 (signal) outputs a noise modulator signal which should be connected directly to inlet 2 of ```[gen~ tract_processor]```.
 
 ### Vocal Tract
 The vocal tract filters an audio source according to a set of tract "diameters" specifying the vocal tract shape, which is affected mainly by the position of the tongue and lips. By default, this audio source is the glottal output, which is the combined signal of the glottal source and aspiration noise, but you may choose to keep only the aspiration and replace the glottal source with any other audio signal. By manipulating the shape of the vocal tract precisely over time, you can create speech patterns.
@@ -39,8 +37,6 @@ The vocal tract filters an audio source according to a set of tract "diameters" 
 The tract processor filters an inputted audio source according to the values inside ```[buffer~ diameter]```. These values can be manipulated through a series of values that simulate mouse interaction (see ```[jsui]``` info below) or by writing diameter values directly (see "Buffers" section below).
 - Inlet 1 receives the audio source to be filtered. By default, this will be the sum of the first 2 outlets of ```[p Glottis]``` (source and aspiration), but you may replace the glottal source (outlet 1) with any other audio source (```[adc~]```, etc.) to create a vocoder-like effect.
 - Inlet 2 receives the noise modulator signal from the third outlet of ```[p Glottis]```.
-- Inlet 3 receives the Max equivalent of the "fricative filter", which produces filtered white noise heard in fricative consonants such as V and S. 
-  - This filter is recreated in Max using ```[noise~] -> [/~ 2] -> [reson~ 1 1000 0.5]```.
 
 #### ```[jsui]```
 The ```[jsui]``` renders an interactive GUI identical to the original Pink Trombone and contains functions that can manipulate properties of the vocal tract to create speech. The length of the vocal tract in segments ("n") determines the length of these arrays and significantly affects the timbre of the voice. The default length of 44 will produce a "male" voice while shorter lengths will produce "younger", more "feminine" voices, especially when coupled with a higher glottis frequency and an EQ on the glottal source (before adding aspiration). The tract length can be manipulated by sending a message to ```[jsui]```:

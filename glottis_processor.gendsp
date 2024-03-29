@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "dsp.gen",
-		"rect" : [ 16.0, 146.0, 1359.0, 729.0 ],
+		"rect" : [ 40.0, 127.0, 1373.0, 743.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -40,11 +40,59 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-14",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 879.0, 149.0, 81.0, 22.0 ],
+					"text" : "scale 0 1 -1 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-13",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 879.0, 125.0, 65.0, 22.0 ],
+					"text" : "phasor 0.5"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-10",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 879.0, 173.0, 130.0, 22.0 ],
+					"text" : "lookup aspirationNoise"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-7",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 613.0, 73.0, 125.0, 22.0 ],
+					"text" : "buffer aspirationNoise"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-11",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 964.0, 535.0, 35.0, 22.0 ],
+					"patching_rect" : [ 978.0, 507.0, 35.0, 22.0 ],
 					"text" : "out 3"
 				}
 
@@ -63,23 +111,11 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-4",
-					"maxclass" : "newobj",
-					"numinlets" : 0,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 867.0, 130.0, 28.0, 22.0 ],
-					"text" : "in 2"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-3",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 592.0, 525.0, 35.0, 22.0 ],
+					"patching_rect" : [ 545.0, 507.0, 35.0, 22.0 ],
 					"text" : "out 2"
 				}
 
@@ -102,7 +138,7 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 150.0, 536.0, 35.0, 22.0 ],
+					"patching_rect" : [ 100.0, 507.0, 35.0, 22.0 ],
 					"text" : "out 1"
 				}
 
@@ -114,7 +150,7 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 360.0, 79.0, 244.0, 22.0 ],
+					"patching_rect" : [ 367.0, 73.0, 244.0, 22.0 ],
 					"text" : "param intensity @default 1 @min 0 @max 1"
 				}
 
@@ -126,14 +162,14 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 93.0, 79.0, 265.0, 22.0 ],
+					"patching_rect" : [ 100.0, 73.0, 265.0, 22.0 ],
 					"text" : "param tenseness @default 0.6 @min 0 @max 1"
 				}
 
 			}
 , 			{
 				"box" : 				{
-					"code" : "History tenseSmooth(0);\r\n\r\ntenseSmooth = tenseSmooth * .999 + tenseness * .001;\r\n\r\nt = in1;\r\nnoiseSource = in2;\r\n\r\nRd = 3 * (1 - tenseSmooth);\r\n\r\nif (Rd<0.5) Rd = 0.5;\r\nif (Rd>2.7) Rd = 2.7;\r\n\r\nRa = -0.01 + 0.048*Rd;\r\nRk = 0.224 + 0.118*Rd;\r\nRg = (Rk/4) * (0.5+1.2*Rk) / (0.11*Rd - Ra*(0.5 + 1.2*Rk));\r\n\r\n\r\nTa = Ra;\r\nTp = 1 / (2*Rg);\r\nTe = Tp + Tp*Rk; \r\n        \r\nepsilon = 1/Ta;\r\nshift = exp(-epsilon * (1-Te));\r\nDelta = 1 - shift; \r\n\r\n\r\nRHSIntegral = ((1/epsilon)*(shift - 1) + (1-Te)*shift) / Delta;\r\n\r\ntotalLowerIntegral = - (Te-Tp)/2 + RHSIntegral;\r\ntotalUpperIntegral = -totalLowerIntegral;\r\n        \r\nomega = PI/Tp;\r\ns = sin(omega*Te);\r\n\r\ny = -PI*s*totalUpperIntegral / (Tp*2);\r\n\r\n\r\nz = log(y);\r\nalpha = z/(Tp/2 - Te);\r\nE0 = -1 / (s*exp(alpha*Te));\r\n\r\noutput = 0;\r\nif (t > Te) \r\n\toutput = (-exp(-epsilon * (t-Te)) + shift) / Delta;\r\n\t\r\nelse output = E0 * exp(alpha*t) * sin(omega * t);\r\n     \r\nout1 = output * intensity * pow(tenseSmooth, 0.25);\r\n\r\n//getNoiseModulator\r\nvoiced = 0.1 + 0.2 * max(0, sin(PI * 2 * t));\r\nnoiseModulator = tenseSmooth * intensity * voiced + (1 - tenseSmooth * intensity ) * 0.3;\r\n\r\naspiration = intensity * (1 - sqrt(tenseSmooth)) * noiseModulator * noiseSource;\r\n\r\nout2 = aspiration;\r\nout3 = noiseModulator;",
+					"code" : "History tenseSmooth(0);\r\n\r\ntenseSmooth = tenseSmooth * .999 + tenseness * .001;\r\n\r\nt = in1;\r\nnoiseSource = in2;\r\n\r\nRd = 3 * (1 - tenseSmooth);\r\n\r\nif (Rd<0.5) Rd = 0.5;\r\nif (Rd>2.7) Rd = 2.7;\r\n\r\nRa = -0.01 + 0.048*Rd;\r\nRk = 0.224 + 0.118*Rd;\r\nRg = (Rk/4) * (0.5+1.2*Rk) / (0.11*Rd - Ra*(0.5 + 1.2*Rk));\r\n\r\n\r\nTa = Ra;\r\nTp = 1 / (2*Rg);\r\nTe = Tp + Tp*Rk; \r\n        \r\nepsilon = 1/Ta;\r\nshift = exp(-epsilon * (1-Te));\r\nDelta = 1 - shift; \r\n\r\n\r\nRHSIntegral = ((1/epsilon)*(shift - 1) + (1-Te)*shift) / Delta;\r\n\r\ntotalLowerIntegral = - (Te-Tp)/2 + RHSIntegral;\r\ntotalUpperIntegral = -totalLowerIntegral;\r\n        \r\nomega = PI/Tp;\r\ns = sin(omega*Te);\r\n\r\ny = -PI*s*totalUpperIntegral / (Tp*2);\r\n\r\n\r\nz = log(y);\r\nalpha = z/(Tp/2 - Te);\r\nE0 = -1 / (s*exp(alpha*Te));\r\n\r\noutput = 0;\r\nif (t > Te) \r\n\toutput = (-exp(-epsilon * (t-Te)) + shift) / Delta;\r\n\t\r\nelse output = E0 * exp(alpha*t) * sin(omega * t);\r\n     \r\nout1 = output * intensity * pow(tenseSmooth, 0.25);\r\n\r\n//getNoiseModulator\r\nvoiced = 0.1 + 0.2 * max(0, sin(PI * 2 * t));\r\nnoiseModulator = tenseSmooth * intensity * voiced + (1 - tenseSmooth * intensity ) * 0.3;\r\n\r\naspiration = intensity * (1 - sqrt(tenseSmooth)) * noiseModulator * noiseSource;\r\n\r\nout2 = aspiration;\r\n\r\nout3 = noiseModulator;",
 					"fontface" : 0,
 					"fontname" : "<Monospaced>",
 					"fontsize" : 12.0,
@@ -149,15 +185,29 @@
  ],
 		"lines" : [ 			{
 				"patchline" : 				{
-					"destination" : [ "obj-5", 0 ],
-					"source" : [ "obj-2", 0 ]
+					"destination" : [ "obj-6", 1 ],
+					"source" : [ "obj-10", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-6", 1 ],
-					"source" : [ "obj-4", 0 ]
+					"destination" : [ "obj-14", 0 ],
+					"source" : [ "obj-13", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-10", 0 ],
+					"source" : [ "obj-14", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"source" : [ "obj-2", 0 ]
 				}
 
 			}
