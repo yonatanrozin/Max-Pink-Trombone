@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "dsp.gen",
-		"rect" : [ 388.0, 108.0, 913.0, 591.0 ],
+		"rect" : [ 34.0, 76.0, 1373.0, 743.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -40,23 +40,25 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-4",
+					"id" : "obj-5",
 					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 545.0, 572.0, 35.0, 22.0 ],
-					"text" : "out 3"
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 100.0, 163.0, 45.0, 22.0 ],
+					"text" : "phasor"
 				}
 
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-2",
+					"id" : "obj-4",
 					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 353.0, 579.0, 35.0, 22.0 ],
-					"text" : "out 2"
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 867.0, 130.0, 28.0, 22.0 ],
+					"text" : "in 2"
 				}
 
 			}
@@ -66,42 +68,19 @@
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 100.0, 592.0, 35.0, 22.0 ],
-					"text" : "out 1"
+					"patching_rect" : [ 818.0, 517.0, 35.0, 22.0 ],
+					"text" : "out 2"
 				}
 
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-14",
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 348.0, 77.0, 150.0, 20.0 ],
-					"text" : "Aspiration noise"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-12",
-					"linecount" : 2,
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 130.0, 70.0, 150.0, 34.0 ],
-					"text" : "From phasor with frequency of voice"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-10",
+					"id" : "obj-2",
 					"maxclass" : "newobj",
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 100.0, 76.0, 28.0, 22.0 ],
+					"patching_rect" : [ 100.0, 120.0, 28.0, 22.0 ],
 					"text" : "in 1"
 				}
 
@@ -109,26 +88,23 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-9",
-					"maxclass" : "comment",
+					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 203.0, 141.0, 150.0, 20.0 ],
-					"text" : "loudness = intensity^0.25"
+					"patching_rect" : [ 150.0, 536.0, 35.0, 22.0 ],
+					"text" : "out 1"
 				}
 
 			}
 , 			{
 				"box" : 				{
-					"code" : "//PT 840\r\nnormalizedLFWaveform(input, Te, epsilon, shift, Delta, E0, alpha, omega, intensity, loudness) {\r\n\toutput = 0;\r\n\r\n\tif (input > Te) {\r\n\t\toutput = (0 - exp(0 - epsilon * (input - Te)) + shift) / Delta;\r\n\t}\r\n\r\n\telse {\r\n\t\toutput = E0 * exp(alpha * input) * sin(omega * input);\r\n\t}\r\n\r\n\treturn output * intensity * loudness;\r\n}\r\n\r\ngetNoiseModulator(input, tenseness, intensity) {\r\n\tvoiced = 0.1 + 0.2 * max(0, sin(PI * 2 * input));\r\n    return tenseness * intensity * voiced + (1 - tenseness * intensity ) * 0.3;\r\n}\r\n\r\n//important timbral parameters for this voice\r\nParam intensity(1., min=0, max=1);\r\nParam tenseness(0.6, min=0, max=1);\r\nParam loudness(1, min=0, max=1);\n\r\n//param values received from setupWaveform (external to this patch)\r\nParam shift(0.);\nParam Te(0.);\nParam E0(0.);\nParam Delta(0.);\nParam omega(0.);\nParam alpha(0.);\nParam epsilon(0.);\r\n\r\n//PT 745-749\r\nrawSamp = normalizedLFWaveform(in1, Te, epsilon, shift, Delta, E0, alpha, omega, intensity, loudness);\r\nnoiseModulator = getNoiseModulator(in1, tenseness, intensity);\r\n\r\naspiration = intensity * (1 - sqrt(tenseness)) * noiseModulator * in2;\r\naspiration *= 0.2; //PLUS SOME PERLIN NOISE, EVENTUALLY\r\n\r\nout1 = rawSamp;\r\nout2 = aspiration;\r\nout3 = noiseModulator;",
-					"fontface" : 0,
-					"fontname" : "<Monospaced>",
-					"fontsize" : 12.0,
-					"id" : "obj-7",
-					"maxclass" : "codebox",
-					"numinlets" : 2,
-					"numoutlets" : 3,
-					"outlettype" : [ "", "", "" ],
-					"patching_rect" : [ 100.0, 177.0, 525.0, 378.0 ]
+					"id" : "obj-8",
+					"maxclass" : "newobj",
+					"numinlets" : 0,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 360.0, 79.0, 244.0, 22.0 ],
+					"text" : "param intensity @default 1 @min 0 @max 1"
 				}
 
 			}
@@ -139,44 +115,59 @@
 					"numinlets" : 0,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 318.0, 76.0, 28.0, 22.0 ],
-					"text" : "in 2"
+					"patching_rect" : [ 93.0, 79.0, 265.0, 22.0 ],
+					"text" : "param tenseness @default 0.6 @min 0 @max 1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"code" : "\r\n\r\nt = in1;\r\nnoiseSource = in2;\r\n\r\nRd = 3 * (1 - tenseness);\r\n\r\nif (Rd<0.5) Rd = 0.5;\r\nif (Rd>2.7) Rd = 2.7;\r\n\r\nRa = -0.01 + 0.048*Rd;\r\nRk = 0.224 + 0.118*Rd;\r\nRg = (Rk/4) * (0.5+1.2*Rk) / (0.11*Rd - Ra*(0.5 + 1.2*Rk));\r\n\r\n\r\nTa = Ra;\r\nTp = 1 / (2*Rg);\r\nTe = Tp + Tp*Rk; \r\n        \r\nepsilon = 1/Ta;\r\nshift = exp(-epsilon * (1-Te));\r\nDelta = 1 - shift; \r\n\r\n\r\nRHSIntegral = ((1/epsilon)*(shift - 1) + (1-Te)*shift) / Delta;\r\n\r\ntotalLowerIntegral = - (Te-Tp)/2 + RHSIntegral;\r\ntotalUpperIntegral = -totalLowerIntegral;\r\n        \r\nomega = PI/Tp;\r\ns = sin(omega*Te);\r\n\r\ny = -PI*s*totalUpperIntegral / (Tp*2);\r\n\r\n\r\nz = log(y);\r\nalpha = z/(Tp/2 - Te);\r\nE0 = -1 / (s*exp(alpha*Te));\r\n\r\noutput = 0;\r\nif (t > Te) \r\n\toutput = (-exp(-epsilon * (t-Te)) + shift) / Delta;\r\n\t\r\nelse output = E0 * exp(alpha*t) * sin(omega * t);\r\n     \r\nout1 = output * intensity * pow(tenseness, 0.25);\r\n\r\n//getNoiseModulator\r\nvoiced = 0.1 + 0.2 * max(0, sin(PI * 2 * t));\r\nnoiseModulator = tenseness * intensity * voiced + (1 - tenseness * intensity ) * 0.3;\r\n\r\naspiration = intensity * (1 - sqrt(tenseness)) * noiseModulator * noiseSource;\r\n\r\nout2 = aspiration;",
+					"fontface" : 0,
+					"fontname" : "<Monospaced>",
+					"fontsize" : 12.0,
+					"id" : "obj-6",
+					"maxclass" : "codebox",
+					"numinlets" : 2,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "" ],
+					"patching_rect" : [ 100.0, 209.0, 909.0, 269.0 ]
 				}
 
 			}
  ],
 		"lines" : [ 			{
 				"patchline" : 				{
-					"destination" : [ "obj-7", 1 ],
-					"source" : [ "obj-1", 0 ]
+					"destination" : [ "obj-5", 0 ],
+					"source" : [ "obj-2", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-7", 0 ],
-					"source" : [ "obj-10", 0 ]
+					"destination" : [ "obj-6", 1 ],
+					"source" : [ "obj-4", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-2", 0 ],
-					"source" : [ "obj-7", 1 ]
+					"destination" : [ "obj-6", 0 ],
+					"source" : [ "obj-5", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-3", 0 ],
-					"source" : [ "obj-7", 0 ]
+					"source" : [ "obj-6", 1 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-4", 0 ],
-					"source" : [ "obj-7", 2 ]
+					"destination" : [ "obj-9", 0 ],
+					"source" : [ "obj-6", 0 ]
 				}
 
 			}

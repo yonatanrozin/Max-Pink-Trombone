@@ -1,7 +1,8 @@
 inlets = 0;
-outlets = 2;
+outlets = 3;
 setoutletassist(0, "Tongue index/diameter");
 setoutletassist(1, "Constriction index/diameter");
+setoutletassist(2, "Current tract diameters as list");
 
 mgraphics.init();
 mgraphics.relative_coords = 0;
@@ -225,6 +226,7 @@ function reshapeTract() {
 	noseDiameter.poke(0, 0, moveTowards(noseDiameter.peek(0, 0), tractParams.get("velumTarget"), 
         amount*0.25, amount*0.1));
 	noseA.poke(0, 0, Math.pow(noseDiameter.peek(0,0), 2)); 
+	outlet(2,diameter.peek(0, 0, 44));
 }
 
 function finishBlock() {
