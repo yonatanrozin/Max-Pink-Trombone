@@ -45,7 +45,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 583.451976537704468, 150.470585823059082, 80.0, 22.0 ],
+					"patching_rect" : [ 225.959242165088654, 455.200006783008575, 80.0, 22.0 ],
 					"text" : "tenseness $1"
 				}
 
@@ -135,8 +135,8 @@
 					"id" : "obj-9",
 					"maxclass" : "newobj",
 					"numinlets" : 2,
-					"numoutlets" : 2,
-					"outlettype" : [ "signal", "signal" ],
+					"numoutlets" : 3,
+					"outlettype" : [ "signal", "signal", "signal" ],
 					"patching_rect" : [ 200.959242165088654, 493.805349469184875, 130.0, 22.0 ],
 					"text" : "gen~ glottis_processor"
 				}
@@ -674,7 +674,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 312.000004649162292, 344.000005125999451, 94.155843257904053, 20.0 ],
+					"patching_rect" : [ 332.371005833148956, 343.382346391677856, 94.155843257904053, 20.0 ],
 					"text" : "vibrato amount"
 				}
 
@@ -686,7 +686,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 257.600003838539124, 367.20000547170639, 36.0, 22.0 ],
+					"patching_rect" : [ 277.959242165088654, 366.176463603973389, 36.0, 22.0 ],
 					"text" : "+~ 1."
 				}
 
@@ -698,7 +698,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 257.600003838539124, 342.400005102157593, 52.702699184417725, 22.0 ],
+					"patching_rect" : [ 277.959242165088654, 341.911758184432983, 52.702699184417725, 22.0 ],
 					"text" : "*~ 0.02"
 				}
 
@@ -922,7 +922,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 312.000004649162292, 319.200004756450653, 101.948050975799561, 20.0 ],
+					"patching_rect" : [ 332.371005833148956, 318.382346868515015, 101.948050975799561, 20.0 ],
 					"text" : "vibrato frequency"
 				}
 
@@ -934,7 +934,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 257.600003838539124, 318.400004744529724, 53.0, 22.0 ],
+					"patching_rect" : [ 277.959242165088654, 317.647052764892578, 53.0, 22.0 ],
 					"text" : "cycle~ 5"
 				}
 
@@ -1226,6 +1226,13 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-82", 0 ],
+					"source" : [ "obj-32", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-27", 0 ],
 					"source" : [ "obj-34", 0 ]
 				}
@@ -1435,6 +1442,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-15", 1 ],
 					"source" : [ "obj-9", 1 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-2", 1 ],
+					"source" : [ "obj-9", 2 ]
 				}
 
 			}
