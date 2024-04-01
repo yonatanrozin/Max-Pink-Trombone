@@ -57,10 +57,10 @@ Send a message to inlet 1 to change param values: ```<paramName> <value>``` (ex:
 - tongueIndex, tongueDiameter: set the position and height, respectively, of the "tongue" along the curve of the vocal tract. In the GUI, you can change these values by clicking around the "tongue control" area. Changing the position of the tongue will affect the "vowel" produced by the voice.
 - constrictionIndex, constrictionDiameter: set the position and height, respectively, of a simulated mouse being held above the GUI at a specific point. This will produce a "constriction" at the specified point, which is key in producing most consonants. In the GUI, you can produce constrictions by clicking/dragging the mouse around the oral cavity. Set constrictionIndex to 0 to remove the constriction.
 - velumTarget (0.01-0.4): sets the diameter of the velum, a small airway connecting the oral cavity and the nasal cavity. Click/drag the mouse around the nasal cavity to open it. It's closed by default.
-- movementSpeed (float, min 0, default 15): sets the speed (in cm/s??) at which the tract diameter values will ramp smoothly when the tongue or constriction values change.
+- movementSpeed (float, min 0, default 15): sets the speed (in cm/s??) with which the tract diameter values will ramp smoothly when the tongue or constriction values change.
 
 #### Inlets/outlets
-- Inlet 1 receives the audio source to be filtered. By default, this will be the sum of the first 2 outlets of ```[p Glottis]``` (source and aspiration), but you may replace the glottal source (outlet 1) with any other audio source (```[adc~]```, etc.) to create a vocoder-like effect. See "using non-glottal source" for more info.
+- Inlet 1 receives the audio source to be filtered. By default, this is the sum of the first 2 outlets of ```[gen~ glottis_processor]``` (source and aspiration), but you may replace the glottal source (outlet 1) with any other audio source (```[adc~]```, etc.) to create a vocoder-like effect. See "using non-glottal source" for more info.
 - Inlet 2 receives the noise modulator signal from the third outlet of ```[gen~ glottis_processor]```.
 
 ### ```[jsui]```
