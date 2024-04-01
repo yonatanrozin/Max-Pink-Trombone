@@ -1,74 +1,86 @@
 # Max Pink Trombone
 A Max/MSP port of the fantastic [Pink Trombone](https://dood.al/pinktrombone/) vocal synthesizer.
 
-__Demo video coming soon!__
+__Demo video coming soon__
 
 ## Installation
 - ```git clone``` this repo into a local folder of your choice or download the ZIP file.
 - The "main" patch is [```Max_Trombone.maxpat```](https://github.com/yonatanrozin/Max-Trombone/blob/main/Max_Trombone.maxpat). Simply open it and enable audio or incorporate it into an existing patch!
 
-## Usage
-_Recommended: view patcher in presentation mode to see only interactive objects._
-- Use the ```[kslider]``` or ```[pictslider]``` at the top to manipulate the pitch and intensity of the generated voice. This will behave identically to the horizontal "keyboard" at the bottom of the original Pink Trombone GUI. 
-- The patch will also accept MIDI note input through ```[midiIn]```. Make sure the object is listening on the correct channel!
-- The original GUI has been re-created in ```[jsui]```, and can be interacted with identically with the mouse to move the tongue and reshape the tract.
-- Alternatively, manipulate the tract values directly. See "manipulating tract diameters" below.
+## Overview
+This patcher is a 1:1 port of the Pink Trombone vocal synthesizer into Max/MSP. The goal of this port is to leverage the incredible real-time voice synthesis of Pink Trombone inside the powerful and flexible interface of Max/MSP for the creation of experimental live performances that explore procedural speech generation. By default, this patcher works identically to the online version:
+- _Recommended: view patcher in presentation mode to view only interactive objects_
+- Use the ```[kslider]``` or ```[pictslider]``` to manipulate the pitch and intensity of the generated voice. This will behave identically to the horizontal "keyboard" at the bottom of the original Pink Trombone GUI. 
+- The original interface has been re-created in the ```[jsui]``` (with slightly reduced visuals), and can be interacted with identically with the mouse to move the tongue and reshape the tract.
+- Adjust the tract length using the "Tract N" dial. This will produce voices with higher formants than the male default. This feature exists in the original code, but is not accessible in the original GUI.
+
+### New features
+- MIDI input
+  - Send MIDI notes to change voice pitch and tenseness
+- Tract waveshaping
+  - Write values directly to tract buffer - create unnatural tract shapes, explore unnatural speech patterns (see "buffers" section)
+- Separate Glottis and Tract audio processes
+  - Filter raw glottal source with EQ to create unique voice timbres
+  - Replace glottal source with a different audio source entirely - make any audio source talk! (see "non-glottal source" section)
+
+### Coming soon
+- Polyphony - control an entire Pink Trombone chorus using MIDI
+- A tool for recording/playback of speech values
+- A tool for generating sequences of constriction/tongue values for speech automation
+- Max4Live plugin - record/manipulate speech values from Ableton Live
 
 ## Patch details
 
 ### ```[gen~ glottis_processor]```
-The Glottis produces a raw "glottal source": the sound produced by the human vocal cords before passing through the mouth; and an "aspiration" signal: white noise added to the glottal source to simulate the sound of breath.
-- Inlet 1 (signal) sets voice frequency (in Hz) and messages that manipulate param values.
-  - Modulate the signal (probably with a sine wave) to create vibrato effects.
-  - Input a message ```tenseness <float 0-1>``` to adjust the voice tenseness, a timbral property between an unpitched whisper and a harsh, strained sound. A "natural" speaking voice is around 0.6, but it may vary depending on the voice frequency.
-  - Input a message ```intensity <float 0-1>``` to adjust the voice intensity (volume).
-- Inlet 2 (signal) connects to the Max equivalent of the "aspiration filter", which produces filtered white noise used to simulate the sound of breath in low-tenseness voices. 
-  - This filter is recreated in Max using ```[noise~] -> [/~ 2] -> [reson~ 1 500 0.5]```.
-- Outlet 1 (signal) outputs the raw glottal source, without aspiration.
-  - Optionally, route this signal through an EQ (or some other effect/filter?) to create voices with different timbres (feminine voices, etc).
-  - Alternatively, you may choose to use a different audio source entirely and leave this outlet unconnected.
-- Outlet 2 (signal) is aspiration noise resulting from low tenseness values. You'll typically add this signal to the glottal source before routing to the tract. Alternatively, you may choose to use only the aspiration signal and replace the glottal source with any other audio source to make it "talk".
-- Outlet 3 (signal) is a noise modulator value which should be connected directly to inlet 2 of ```[gen~ tract_processor]```.
+The glottis processor produces a raw "glottal source": the sound produced by the human vocal cords before passing through the mouth; and an "aspiration" signal: white noise added to the glottal source to simulate the sound of breath. Aspiration gets louder with lower tenseness values.
 
-### Vocal Tract
-The vocal tract filters an audio source according to a set of tract "diameters" specifying the vocal tract shape, which is affected mainly by the position of the tongue and lips. By default, this audio source is the glottal output, which is the combined signal of the glottal source and aspiration noise, but you may choose to keep only the aspiration and replace the glottal source with any other audio signal. By manipulating the shape of the vocal tract precisely over time, you can create speech patterns.
-- ```[gen~ tract_processor]``` does the actual sound filtering.
-- ```[jsui]``` handles manipulating the shape of the vocal tract through mouse interaction or by simulating mouse interaction through a series of abstracted values.
+#### Params
+Send a message to inlet 1 to change param values: ```<paramName> <value>``` (ex: "tenseness 0.5")
+- tenseness (0-1): voice tenseness, a timbral property between an unpitched whisper and a harsh, strained sound. A "natural" speaking voice is around 0.6, but it may vary depending on the voice frequency.
+- intensity (0-1): volume of air flow through the "tract". This is a timbral property, and shouldn't be treated as just a gain value. Ramp the value smoothly between 0 and 1 to start and stop the voice (such as between words, etc.)
 
-#### ```[gen~ tract_processor]```
-The tract processor filters an inputted audio source according to the values inside ```[buffer~ diameter]```. These values can be manipulated through a series of values that simulate mouse interaction (see ```[jsui]``` info below) or by writing diameter values directly (see "Buffers" section below).
-- Inlet 1 receives the audio source to be filtered. By default, this will be the sum of the first 2 outlets of ```[p Glottis]``` (source and aspiration), but you may replace the glottal source (outlet 1) with any other audio source (```[adc~]```, etc.) to create a vocoder-like effect.
-- Inlet 2 receives the noise modulator signal from the third outlet of ```[p Glottis]```.
-- Inlet 3 receives the Max equivalent of the "fricative filter", which produces filtered white noise heard in fricative consonants such as V and S. 
-  - This filter is recreated in Max using ```[noise~] -> [/~ 2] -> [reson~ 1 1000 0.5]```.
+#### Inlets/outlets
+- Inlet 1 (signal) sets voice frequency (in Hz).
+  - Modulate the signal (probably with a sine wave LFO) to create vibrato effects. Experiment with different LFO frequencies and amplitudes to vary vibrato frequency and intensity. A constant frequency value will produce a robotic sound, so it's recommended to modulate the frequency at least a little bit.
+- Outlet 1 (signal) outputs the raw glottal source.
+  - Optionally, route this signal through an EQ (or some other effect/filter?) to create voices with different timbres ("feminine" voices, etc).
+  - Alternatively, replace the glottal source with an entirely different audio source and leave this outlet unconnected (see "using non-glottal source")
+- Outlet 2 (signal) outputs aspiration noise resulting from low tenseness values. You should combine (+~) this signal with your audio source (glottis or other) before inputting to the tract.
+- Outlet 3 (signal) outputs a noise modulator signal, a variable shared between the glottis and tract. The signal should be connected directly to inlet 2 of ```[gen~ tract_processor]```.
 
-#### ```[jsui]```
-The ```[jsui]``` renders an interactive GUI identical to the original Pink Trombone and contains functions that can manipulate properties of the vocal tract to create speech. The length of the vocal tract in segments ("n") determines the length of these arrays and significantly affects the timbre of the voice. The default length of 44 will produce a "male" voice while shorter lengths will produce "younger", more "feminine" voices, especially when coupled with a higher glottis frequency and an EQ on the glottal source (before adding aspiration). The tract length can be manipulated by sending a message to ```[jsui]```:
-- ```init <int>``` to set tract length. This currently may produce a short high-pitched noise, so avoid doing this while audio is turned on. (fix coming soon)
+### ```[gen~ tract_processor]```
+The vocal tract processor filters an audio source according to a set of tract "diameters" specifying the vocal tract shape, which is affected mainly by the position of the tongue and lips. By default, this audio source is the glottal output, which is the combined signal of the glottal source and aspiration noise, but you may choose to replace the glottal source with a different audio signal (see "using non-glottal source"). By manipulating the shape of the vocal tract over time, you can create speech patterns.
 
-Tract diameters are abstracted by 2 sets of values:
-- the "index" and "diameter" (location and height along the curve of the GUI) of the tongue, which can be moved around the "tongue control" area,
-- the index and diameter of the cursor while the mouse button is held, creating a temporary "constriction" in the tract.
-To manipulate these values:
-- Interact with ```[jsui]``` with the mouse, which will behave identically to the original Pink Trombone, OR:
-- Send ```[jsui]``` a message:
-  - ```constrictionIndex <float>``` or ```constrictionDiameter <float>``` will simulate a mouse being held at the specified index/diameter. Use -1 for either value to simulate the mouse being released.
-  - ```tongueIndex <float>``` or ```tongueDiameter <float>``` will set the tongue position.
-  - The ```[jsui]``` will stream tongue and constriction information out its first 2 outlets. You can click around the UI and display/print the outputted values to record them.
-- __coming soon__: docs on using ```[line]``` to automate sequences of these values to create speech
- 
-#### Buffers
-Pink Trombone uses many internal Float64Arrays in the calculation of audio sample values. In Max, these Float64Arrays are re-created using ```[buffer~]```s. You shouldn't ever write values manually to most of these buffers. The only 2 you should ever write values to are ```[buffer~ diameter]``` and ```[buffer~ targetDiameter]```, which specify the shape of the vocal tract. ```[buffer~ diameter]``` contains the "current" tract diameters, while ```[buffer~ targetDiameter]``` stores a set of target values. The values in each index of diameter ramp smoothly towards the corresponding value in targetDiameter to prevent pops in the produced sound. To manipulate the vocal tract manually (waveshaping?, etc.):
+#### Params
+Send a message to inlet 1 to change param values: ```<paramName> <value>``` (ex: "velumTarget 0.3")
+- n (int 30-44) - the vocal tract length, in segments. This property significantly affects the timbre of the voice. The default value 44 will simulate an average adult male tract, while lower values will simulate younger, more "female" tracts. This will produce voices with higher vowel formants, especially when combined with higher glottis frequencies and maybe an EQ.
+- tongueIndex, tongueDiameter: set the position and height, respectively, of the "tongue" along the curve of the vocal tract. In the GUI, you can change these values by clicking around the "tongue control" area. Changing the position of the tongue will affect the "vowel" produced by the voice.
+- constrictionIndex, constrictionDiameter: set the position and height, respectively, of a simulated mouse being held above the GUI at a specific point. This will produce a "constriction" at the specified point, which is key in producing most consonants. In the GUI, you can produce constrictions by clicking/dragging the mouse around the oral cavity. Set constrictionIndex to 0 to remove the constriction.
+- velumTarget (0.01-0.4): sets the diameter of the velum, a small airway connecting the oral cavity and the nasal cavity. Click/drag the mouse around the nasal cavity to open it. It's closed by default.
+- movementSpeed (float, min 0, default 15): sets the speed (in cm/s??) with which the tract diameter values will ramp smoothly when the tongue or constriction values change.
+
+#### Inlets/outlets
+- Inlet 1 receives the audio source to be filtered. By default, this is the sum of the first 2 outlets of ```[gen~ glottis_processor]``` (source and aspiration), but you may replace the glottal source (outlet 1) with any other audio source (```[adc~]```, etc.) to create a vocoder-like effect. See "using non-glottal source" for more info.
+- Inlet 2 receives the noise modulator signal from the third outlet of ```[gen~ glottis_processor]```.
+
+### ```[jsui]```
+The ```[jsui]``` renders an interactive GUI identical to the original Pink Trombone and can automatically generate messages to control tract processor param values. __The GUI does not update visuals while audio in your patcher is turned off!__
+- Input an int to inlet 1 to set the visual tract length. This value must always be equal to the tract processor's internal "n" param value. The GUI will adjust the n value of the tract processor automatically when connected, so you don't need to send a separate message for each object.
+- Outlet 1 should be connected to inlet 1 of ```[gen~ tract_processor]``` to allow the GUI to control vocal tract param values automatically.
+- Print/view messages from outlets 2 and 3 to see tongue and constriction positions, respectively, when changed.
+
+### Using non-glottal audio source
+The audio processes of the original Pink Trombone glottis and tract objects have been split into separate modules. By default, the glottis processor produces a glottal signal which is fed into the tract processor for filtering. However, you can replace the glottal signal with any other audio source to create a vocoder-like effect, without the need for a separate vocal signal. You can make any audio source talk, using the GUI to change the filter or by simulating mouse interaction using the tract processor param values. To replace the glottal source with your own audio source:
+- Disconnect outlet 1 of ```[gen~ glottis_processor]```. It will remain unconnected.
+- Connect your custom audio source and outlet 2 of the glottis processor to the 2 inlets of a ```[+~]``` object.
+- Connect the outlet of ```[+~]``` to inlet 1 of ```[gen~ tract_processor]```.
+You will no longer have as much control over the "tenseness" of your audio source (although you can certainly simulate it, probably using lowpass filters), but you will now be able to create speech using your custom audio source by manipulating the tract processor the same way you would before.
+
+### Buffers
+Pink Trombone uses many internal Float64Arrays in the calculation of audio sample values. In Max, most of these Float64Arrays are re-created using gen ```Data``` operators and Max buffers. The only 2 buffers you should ever write values to manually are ```[buffer~ diameter]``` and ```[buffer~ targetDiameter]```, which specify the shape of the vocal tract. ```[buffer~ diameter]``` contains the "current" tract diameters, while ```[buffer~ targetDiameter]``` stores a set of target values. The values in each index of diameter ramp smoothly towards the corresponding value in targetDiameter to prevent pops in the produced sound. To manipulate the vocal tract manually (waveshaping?, etc.):
 - Write values to ```[buffer~ targetDiameter]```. Observe in ```[jsui]``` how the current values ramp smoothly towards the new values.
-- Alternatively, write values to ```[buffer~ diameter]``` to set the current diameter values directly, with no ramp. __You must ALSO write the same values to targetDiameter or they'll just return to their previous values.__
-- ```[jsui]``` will stream a list containing the current tract diameters out of its 3rd outlet. Display/print these values to record them, if needed.
-Be aware that setting diameter values directly may result in tract shapes that are neither achievable in the original Pink Trombone GUI, nor producible naturally in a human mouth. This may cause unnatural-sounding "speech" patterns, but will probably sound cool regardless.
-
-## Coming soon
-- Demo video
-- Polyphony - manipulate multiple voices at once!
-- A tool for generating tongue/constriction sequences for speech automation
-- Max4Live plugin?
+- Alternatively, write values to ```[buffer~ diameter]``` to set the current diameter values instantly with no ramp if you'd like, though this may result in audio pops. __You must ALSO write the same values to targetDiameter or they'll just return to their previous values.__
+- Be aware! Setting diameter values directly may result in tract shapes that are neither achievable in the original Pink Trombone GUI nor producible naturally in a human mouth. This may cause unnatural-sounding "speech" patterns.
 
 ## Notice
-This patch is based heavily and exclusively on the original [Pink Trombone](https://dood.al/pinktrombone/), created by Neil Thapen and released under the [MIT License](https://opensource.org/license/mit).
+This patch is based heavily and exclusively on the original [Pink Trombone](https://dood.al/pinktrombone/), created by Neil Thapen and released under the [MIT License](https://opensource.org/license/mit). A copy of the original code and the license are included in this repository [here](https://github.com/yonatanrozin/Max-Pink-Trombone/blob/main/Pink_Trombone_Original.html).
