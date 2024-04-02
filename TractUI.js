@@ -17,6 +17,8 @@ var lipStart = 39;
 var noseLength = 28;
 var noseStart = tractN - noseLength + 1;
 
+var voice = 1;
+
 function msg_int(newN) {
 	tractN = newN;
  	bladeStart = Math.floor(10 * tractN/44);
@@ -24,12 +26,20 @@ function msg_int(newN) {
  	lipStart = Math.floor(39 * tractN/44);
  	noseLength = Math.floor(28 * tractN/44);
 	noseStart = tractN - noseLength + 1;
+	outlet(0, "target", voice);
 	outlet(0, ["n"], newN);
 }
 
-var diameter = new Buffer("diameter");
-var targetDiameter = new Buffer("targetDiameter");
-var noseDiameter = new Buffer("noseDiameter");
+//var diameter = new Buffer("diameter." + voice);
+var targetDiameter = new Buffer("targetDiameter." + voice);
+var noseDiameter = new Buffer("noseDiameter." + voice);
+
+function target(voiceNum) {
+	voice = voiceNum;
+	//diameter = new Buffer("diameter." + voice);
+	targetDiameter = new Buffer("targetDiameter." + voice);
+	noseDiameter = new Buffer("noseDiameter." + voice);
+}
 
 var widthOrig = 490;
 var heightOrig = 520;
@@ -76,7 +86,7 @@ function paint() {
 		set_source_rgba(fillColor);
 		tMoveTo(1, 0);
 		for (var i = 0; i < tractN; i++) {
-			tLineTo(i, diameter.peek(0, i));
+			tLineTo(i, targetDiameter.peek(0, i));
 		}
 		for (var i = tractN - 1; i >= 2; i--) 
 			tLineTo(i, 0);  
@@ -110,9 +120,9 @@ function paint() {
 		//lines
 		set_line_width(5 * cnvAreaScale);
 		set_source_rgba(lineColor);
-		tMoveTo(1, diameter.peek(0, 0));
+		tMoveTo(1, targetDiameter.peek(0, 0));
 		for (var i = 2; i < tractN; i++) 
-			tLineTo(i, diameter.peek(0, i));
+			tLineTo(i, targetDiameter.peek(0, i));
 		tMoveTo(1, 0);
 		for (var i = 2; i <= noseStart - 2; i++) 
 			tLineTo(i, 0);
@@ -251,7 +261,7 @@ function drawAmplitudes(noseStart) {
 		
 		for (var i = 2; i < tractN - 1; i++) {
             tMoveTo(i, 0);
-            tLineTo(i, diameter.peek(0, i));
+            tLineTo(i, targetDiameter.peek(0, i));
         }
 
 		for (var i = 2; i < noseLength; i++) {
@@ -350,7 +360,7 @@ function handleTouch(index, dia, button) {
 		Number(dia.toFixed(2))
 	]);
 	
-	
+	outlet(0, "target", voice);
 	outlet(0, "velumTarget", velumTarget);
 	outlet(0, "constrictionIndex", index);
 	outlet(0, "constrictionDiameter", dia);
