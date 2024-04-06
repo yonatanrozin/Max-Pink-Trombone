@@ -40,25 +40,25 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-11",
-					"linecount" : 4,
-					"maxclass" : "comment",
+					"id" : "obj-2",
+					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 387.0, 457.0, 150.0, 62.0 ],
-					"text" : "TODO: addTurbulenceNoise based on constriction values"
+					"numoutlets" : 2,
+					"outlettype" : [ "float", "bang" ],
+					"patching_rect" : [ 761.0, 218.0, 196.0, 22.0 ],
+					"text" : "buffer~ targetDiameter @samps 44"
 				}
 
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-8",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 138.0, 357.0, 79.0, 22.0 ],
-					"text" : "target 1, n 40"
+					"id" : "obj-11",
+					"linecount" : 7,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 411.0, 390.111095666885376, 226.0, 103.0 ],
+					"text" : "TODO: \n\naddTurbulenceNoise based on constriction values,\n\ntongue/constriction index values scaling with tract N"
 				}
 
 			}
@@ -142,8 +142,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 254.23729419708252, 378.813568353652954, 89.0, 22.0 ],
-					"text" : "loadmess init 3"
+					"patching_rect" : [ 254.23729419708252, 378.813568353652954, 107.0, 22.0 ],
+					"text" : "loadmess voices 5"
 				}
 
 			}
@@ -456,7 +456,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 984.271050930023193, 663.51455420255661, 50.0, 22.0 ],
-					"text" : "0 2.52"
+					"text" : "0 0.56"
 				}
 
 			}
@@ -469,7 +469,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 817.271050930023193, 663.51455420255661, 50.0, 36.0 ],
-					"text" : "27.63 2.52"
+					"text" : "20.5 3.5"
 				}
 
 			}
@@ -539,23 +539,6 @@
 					}
 ,
 					"text" : "polybuffer~ noseDiameter"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"fontsize" : 12.0,
-					"id" : "obj-71",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "bang" ],
-					"patching_rect" : [ 761.0, 218.0, 151.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"embed" : 0
-					}
-,
-					"text" : "polybuffer~ targetDiameter"
 				}
 
 			}
@@ -755,13 +738,6 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-18", 1 ],
-					"source" : [ "obj-8", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-6", 1 ],
 					"source" : [ "obj-9", 0 ]
 				}
@@ -823,10 +799,6 @@
 			}
  ],
 		"autosave" : 0,
-		"boxgroups" : [ 			{
-				"boxes" : [ "obj-71", "obj-29" ]
-			}
- ],
 		"styles" : [ 			{
 				"name" : "rnbodefault",
 				"default" : 				{

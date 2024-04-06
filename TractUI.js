@@ -31,13 +31,13 @@ function msg_int(newN) {
 }
 
 //var diameter = new Buffer("diameter." + voice);
-var targetDiameter = new Buffer("targetDiameter." + voice);
+var targetDiameter = new Buffer("targetDiameter");
 var noseDiameter = new Buffer("noseDiameter." + voice);
+var diameter = new Buffer("diameter." + voice);
 
 function target(voiceNum) {
 	voice = voiceNum;
-	//diameter = new Buffer("diameter." + voice);
-	targetDiameter = new Buffer("targetDiameter." + voice);
+	diameter = new Buffer("diameter." + voice);
 	noseDiameter = new Buffer("noseDiameter." + voice);
 }
 
@@ -72,7 +72,7 @@ var cIndex = 0;
 var cDiameter = 5;
 
 var drawTask = new Task(function() {mgraphics.redraw()});
-drawTask.interval = 10;
+drawTask.interval = 1000/60;
 drawTask.repeat();
 
 //1231 (TractUI.draw())
@@ -86,7 +86,7 @@ function paint() {
 		set_source_rgba(fillColor);
 		tMoveTo(1, 0);
 		for (var i = 0; i < tractN; i++) {
-			tLineTo(i, targetDiameter.peek(0, i));
+			tLineTo(i, diameter.peek(0, i));
 		}
 		for (var i = tractN - 1; i >= 2; i--) 
 			tLineTo(i, 0);  
@@ -120,9 +120,9 @@ function paint() {
 		//lines
 		set_line_width(5 * cnvAreaScale);
 		set_source_rgba(lineColor);
-		tMoveTo(1, targetDiameter.peek(0, 0));
+		tMoveTo(1, diameter.peek(0, 0));
 		for (var i = 2; i < tractN; i++) 
-			tLineTo(i, targetDiameter.peek(0, i));
+			tLineTo(i, diameter.peek(0, i));
 		tMoveTo(1, 0);
 		for (var i = 2; i <= noseStart - 2; i++) 
 			tLineTo(i, 0);
@@ -261,7 +261,7 @@ function drawAmplitudes(noseStart) {
 		
 		for (var i = 2; i < tractN - 1; i++) {
             tMoveTo(i, 0);
-            tLineTo(i, targetDiameter.peek(0, i));
+            tLineTo(i, diameter.peek(0, i));
         }
 
 		for (var i = 2; i < noseLength; i++) {
