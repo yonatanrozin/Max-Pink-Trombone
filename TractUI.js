@@ -2,7 +2,7 @@ inlets = 1;
 outlets = 3;
 
 setinletassist(0, '(int) tract length "n"');
-setoutletassist(0, "Messages for gen~");
+setoutletassist(0, "Messages for gen~ tract processor");
 setoutletassist(1, "Tongue index + diameter when changed");
 setoutletassist(2, "Constriction index + diameter when changed");
 
@@ -17,9 +17,9 @@ var lipStart = 39;
 var noseLength = 28;
 var noseStart = tractN - noseLength + 1;
 
-var voice = 1;
+var voice = 0;
 
-function msg_int(newN) {
+function n(newN) {
 	tractN = newN;
  	bladeStart = Math.floor(10 * tractN/44);
  	tipStart = Math.floor(32 * tractN/44);
@@ -30,16 +30,17 @@ function msg_int(newN) {
 	outlet(0, ["n"], newN);
 }
 
-//var diameter = new Buffer("diameter." + voice);
-var targetDiameter = new Buffer("targetDiameter");
-var noseDiameter = new Buffer("noseDiameter." + voice);
-var diameter = new Buffer("diameter." + voice);
+var noseDiameter = new Buffer("noseDiameter." + (voice || 1));
+var diameter = new Buffer("diameter." + (voice || 1));
 
 function target(voiceNum) {
 	voice = voiceNum;
-	diameter = new Buffer("diameter." + voice);
-	noseDiameter = new Buffer("noseDiameter." + voice);
+	post("diameter." + (voice || 1));
+	diameter = new Buffer("diameter." + (voice || 1));
+	noseDiameter = new Buffer("noseDiameter." + (voice || 1));
 }
+
+target(voice);
 
 var widthOrig = 490;
 var heightOrig = 520;

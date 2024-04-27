@@ -1,7 +1,16 @@
+outlets = 1;
+
 var noseDiameter = new PolyBuffer("noseDiameter");
 var diameter = new PolyBuffer("diameter");
 
+var voiceCount;
+
 function voices(num) {
+	
+	if (num == voiceCount) return;
+	voiceCount = num;
+	
+	outlet(0, "voices", num);
 			
 	noseDiameter.clear();
 	diameter.clear();

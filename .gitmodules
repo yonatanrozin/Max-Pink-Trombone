@@ -1,0 +1,3 @@
+[submodule "leapc-python-bindings"]
+	path = leapc-python-bindings
+	url = https://github.com/ultraleap/leapc-python-bindings.git

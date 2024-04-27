@@ -18,18 +18,21 @@ This patcher is a 1:1 port of the Pink Trombone vocal synthesizer into Max/MSP. 
 - MIDI input
   - Send MIDI notes to change voice pitch and tenseness
 - Tract waveshaping
-  - Write values directly to tract buffer - create unnatural tract shapes, explore unnatural speech patterns (see "buffers" section)
+  - Write values directly to tract buffers - create unnatural tract shapes, explore unnatural speech patterns (see "buffers" section)
 - Separate Glottis and Tract audio processes
   - Filter raw glottal source with EQ to create unique voice timbres
   - Replace glottal source with a different audio source entirely - make any audio source talk! (see "non-glottal source" section)
+- Polyphony
+  - Control a small pink trombone chorus! See "polyphony" section.
 
 ### Coming soon
-- Polyphony - control an entire Pink Trombone chorus using MIDI
 - A tool for recording/playback of speech values
 - A tool for generating sequences of constriction/tongue values for speech automation
 - Max4Live plugin - record/manipulate speech values from Ableton Live
 
 ## Patch details
+
+Look inside ```[poly~ MPT_Voice]``` for gen objects relevant to speech synthesis:
 
 ### ```[gen~ glottis_processor]```
 The glottis processor produces a raw "glottal source": the sound produced by the human vocal cords before passing through the mouth; and an "aspiration" signal: white noise added to the glottal source to simulate the sound of breath. Aspiration gets louder with lower tenseness values.
