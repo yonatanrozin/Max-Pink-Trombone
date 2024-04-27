@@ -4,19 +4,26 @@ setoutletassist(0, "messages to glottis");
 setoutletassist(1, "messages to tract");
 setoutletassist(2, "current [consonant, position, direction]");
 
-var phonemes = JSON.parse(new Dict("phonemes").stringify());
-
-var {vowels, consonants, wheels, triangles} = phonemes;
-
 var dir = "f";
 
-function bang() {
+var phonemes = JSON.parse(new Dict("phonemes").stringify());
+var {vowels, consonants, wheels, triangles} = phonemes;
+
+function getPhonemes() {
+	var phonemes = JSON.parse(new Dict("phonemes").stringify());
+}
+
+function dictionary(e) {
 	
-	const hand = new Dict("handInfo");
-			
+	post("vowels" in phonemes);
+
+	
+	
+	const hand = new Dict(e);
+					
 	var vX = Math.min(1, Math.max(-1, hand.get("x")/100));
 	var vY = Math.min(1, Math.max(-1, (hand.get("y")-250)/100));
-	
+		
 	const cPos = Math.min(Math.max(0, (hand.get("z") + 50)/100), 1);
 	
 	if (cPos == 1) dir = "f";
