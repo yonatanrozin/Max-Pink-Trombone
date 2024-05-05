@@ -1,7 +1,7 @@
 # Max Pink Trombone
 A Max/MSP port of the fantastic [Pink Trombone](https://dood.al/pinktrombone/) vocal synthesizer.
 
-__Demo video coming soon__
+__THESE DOCS ARE SLIGHTLY OUTDATED FOR THE POLYPHONIC VERSION!!! UPDATED DOCS COMING SOON__
 
 ## Installation
 - ```git clone``` this repo into a local folder of your choice or download the ZIP file.
@@ -15,21 +15,19 @@ This patcher is a 1:1 port of the Pink Trombone vocal synthesizer into Max/MSP. 
 - Adjust the tract length using the "Tract N" dial. This will produce voices with higher formants than the male default. This feature exists in the original code, but is not accessible in the original GUI.
 
 ### New features
-- MIDI input
-  - Send MIDI notes to change voice pitch and tenseness
-- Tract waveshaping
-  - Write values directly to tract buffer - create unnatural tract shapes, explore unnatural speech patterns (see "buffers" section)
 - Separate Glottis and Tract audio processes
   - Filter raw glottal source with EQ to create unique voice timbres
   - Replace glottal source with a different audio source entirely - make any audio source talk! (see "non-glottal source" section)
 
 ### Coming soon
-- Polyphony - control an entire Pink Trombone chorus using MIDI
+- MIDI input
 - A tool for recording/playback of speech values
 - A tool for generating sequences of constriction/tongue values for speech automation
 - Max4Live plugin - record/manipulate speech values from Ableton Live
 
 ## Patch details
+
+Look inside ```[poly~ MPT_Voice]``` for audio processing objects
 
 ### ```[gen~ glottis_processor]```
 The glottis processor produces a raw "glottal source": the sound produced by the human vocal cords before passing through the mouth; and an "aspiration" signal: white noise added to the glottal source to simulate the sound of breath. Aspiration gets louder with lower tenseness values.
@@ -42,6 +40,7 @@ Send a message to inlet 1 to change param values: ```<paramName> <value>``` (ex:
 #### Inlets/outlets
 - Inlet 1 (signal) sets voice frequency (in Hz).
   - Modulate the signal (probably with a sine wave LFO) to create vibrato effects. Experiment with different LFO frequencies and amplitudes to vary vibrato frequency and intensity. A constant frequency value will produce a robotic sound, so it's recommended to modulate the frequency at least a little bit.
+- Inlet 2 (signal) receives the aspiration noise - filtered white noise used to simulate the sound of "breathiness" in the synthesized voice. In Pink Trombone, this is half-amplitude white noise filtered through a 500Hz, .5Q bandpass filter.
 - Outlet 1 (signal) outputs the raw glottal source.
   - Optionally, route this signal through an EQ (or some other effect/filter?) to create voices with different timbres ("feminine" voices, etc).
   - Alternatively, replace the glottal source with an entirely different audio source and leave this outlet unconnected (see "using non-glottal source")
@@ -75,12 +74,6 @@ The audio processes of the original Pink Trombone glottis and tract objects have
 - Connect your custom audio source and outlet 2 of the glottis processor to the 2 inlets of a ```[+~]``` object.
 - Connect the outlet of ```[+~]``` to inlet 1 of ```[gen~ tract_processor]```.
 You will no longer have as much control over the "tenseness" of your audio source (although you can certainly simulate it, probably using lowpass filters), but you will now be able to create speech using your custom audio source by manipulating the tract processor the same way you would before.
-
-### Buffers
-Pink Trombone uses many internal Float64Arrays in the calculation of audio sample values. In Max, most of these Float64Arrays are re-created using gen ```Data``` operators and Max buffers. The only 2 buffers you should ever write values to manually are ```[buffer~ diameter]``` and ```[buffer~ targetDiameter]```, which specify the shape of the vocal tract. ```[buffer~ diameter]``` contains the "current" tract diameters, while ```[buffer~ targetDiameter]``` stores a set of target values. The values in each index of diameter ramp smoothly towards the corresponding value in targetDiameter to prevent pops in the produced sound. To manipulate the vocal tract manually (waveshaping?, etc.):
-- Write values to ```[buffer~ targetDiameter]```. Observe in ```[jsui]``` how the current values ramp smoothly towards the new values.
-- Alternatively, write values to ```[buffer~ diameter]``` to set the current diameter values instantly with no ramp if you'd like, though this may result in audio pops. __You must ALSO write the same values to targetDiameter or they'll just return to their previous values.__
-- Be aware! Setting diameter values directly may result in tract shapes that are neither achievable in the original Pink Trombone GUI nor producible naturally in a human mouth. This may cause unnatural-sounding "speech" patterns.
 
 ## Notice
 This patch is based heavily and exclusively on the original [Pink Trombone](https://dood.al/pinktrombone/), created by Neil Thapen and released under the [MIT License](https://opensource.org/license/mit). A copy of the original code and the license are included in this repository [here](https://github.com/yonatanrozin/Max-Pink-Trombone/blob/main/Pink_Trombone_Original.html).
