@@ -17,9 +17,11 @@ var lipStart = 39;
 var noseLength = 28;
 var noseStart = tractN - noseLength + 1;
 
-var voice = 1;
+var voice = 0;
 
-function msg_int(newN) {
+var diameter = new Float64Array(44);
+
+function n(newN) {
 	tractN = newN;
  	bladeStart = Math.floor(10 * tractN/44);
  	tipStart = Math.floor(32 * tractN/44);
@@ -27,13 +29,11 @@ function msg_int(newN) {
  	noseLength = Math.floor(28 * tractN/44);
 	noseStart = tractN - noseLength + 1;
 	outlet(0, "target", voice);
-	outlet(0, ["n"], newN);
+	outlet(0, "n", newN);
 }
 
 //var diameter = new Buffer("diameter." + voice);
-var targetDiameter = new Buffer("targetDiameter");
 var noseDiameter = new Buffer("noseDiameter." + voice);
-var diameter = new Buffer("diameter." + voice);
 
 function target(voiceNum) {
 	voice = voiceNum;
@@ -75,9 +75,66 @@ var drawTask = new Task(function() {mgraphics.redraw()});
 drawTask.interval = 1000/60;
 drawTask.repeat();
 
+function getDiameters() {
+	
+	for (var i=0; i < tractN; i++) {
+        var d = 0;
+        if (i<7*tractN/44-0.5) d = 0.6;
+        else if (i<12*this.n/44) d = 1.1;
+        else d = 1.5;
+		diameter[i] = d;
+    }
+
+
+
+	//inscribe tongue position
+	
+	for (var i = bladeStart; i < lipStart; i++) {
+        var t = 1.1 * Math.PI * (tIndex - i)/(tipStart - bladeStart);
+        var fixedTongueDiameter = 2+(tDiameter-2)/1.5;
+        var curve = (1.5-fixedTongueDiameter + 1.7)*Math.cos(t);
+        if (i == bladeStart-2 || i == lipStart-1) curve *= 0.8;
+        if (i == bladeStart || i == lipStart-2) curve *= 0.94;               
+        diameter[i] = 1.5 - curve;
+    }
+
+	//inscribe constriction
+	if (cDiameter < -0.85 - 0.8) return;
+	
+	var dia = cDiameter - 0.3;
+	var ind = cIndex - 1;
+	
+	if (dia<0) dia = 0;         
+
+	var width = 2;
+	if (ind < 25) width = 10;
+	else if (ind >= tipStart) width= 5;
+    else width = 10 - 5*(ind-25)/(tipStart-25);
+
+	if (ind >= 2 && ind < tractN && dia < 3) {
+        var intIndex = Math.round(ind);
+        for (var i = -Math.ceil(width)-1; i<width+1; i++) {   
+            if (intIndex+i < 0 || intIndex+i >= tractN) continue;
+            var relpos = (intIndex+i) - ind;
+            relpos = Math.abs(relpos)-0.5;
+			var shrink;
+			if (relpos <= 0) shrink = 0;
+			else if (relpos > width) shrink = 1;
+			else shrink = 0.5*(1-Math.cos(Math.PI * relpos / width));
+			if (dia < diameter[intIndex+i]) {
+				diameter[intIndex+i] = dia + (diameter[intIndex+i]-dia)*shrink;
+			}
+		}
+	}
+
+}
+
 //1231 (TractUI.draw())
 function paint() {
 	with (mgraphics) {
+		
+		getDiameters();
+		
 		mgraphics.select_font_face("Arial bold");
 
 		drawTongueControl();
@@ -86,7 +143,7 @@ function paint() {
 		set_source_rgba(fillColor);
 		tMoveTo(1, 0);
 		for (var i = 0; i < tractN; i++) {
-			tLineTo(i, diameter.peek(0, i));
+			tLineTo(i, diameter[i]);
 		}
 		for (var i = tractN - 1; i >= 2; i--) 
 			tLineTo(i, 0);  
@@ -120,9 +177,9 @@ function paint() {
 		//lines
 		set_line_width(5 * cnvAreaScale);
 		set_source_rgba(lineColor);
-		tMoveTo(1, diameter.peek(0, 0));
+		tMoveTo(1, diameter[0]);
 		for (var i = 2; i < tractN; i++) 
-			tLineTo(i, diameter.peek(0, i));
+			tLineTo(i, diameter[i]);
 		tMoveTo(1, 0);
 		for (var i = 2; i <= noseStart - 2; i++) 
 			tLineTo(i, 0);
@@ -261,7 +318,7 @@ function drawAmplitudes(noseStart) {
 		
 		for (var i = 2; i < tractN - 1; i++) {
             tMoveTo(i, 0);
-            tLineTo(i, diameter.peek(0, i));
+            tLineTo(i, diameter[0]);
         }
 
 		for (var i = 2; i < noseLength; i++) {
@@ -329,6 +386,9 @@ function ondrag(x,y,button) {
 }
 
 function handleTouch(index, dia, button) {
+	
+	cIndex = index;
+	cDiameter = dia;
 	
 	var tongueLowerIndexBound = bladeStart + 2;
 	var tongueUpperIndexBound = tipStart - 3;

@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 76.0, 1373.0, 743.0 ],
+		"rect" : [ 34.0, 76.0, 1067.0, 743.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -40,25 +40,37 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-2",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "float", "bang" ],
-					"patching_rect" : [ 761.0, 218.0, 196.0, 22.0 ],
-					"text" : "buffer~ targetDiameter @samps 44"
+					"id" : "obj-11",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 137.0, 357.0, 53.0, 22.0 ],
+					"text" : "voices 4"
 				}
 
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-11",
-					"linecount" : 7,
-					"maxclass" : "comment",
-					"numinlets" : 1,
-					"numoutlets" : 0,
-					"patching_rect" : [ 411.0, 390.111095666885376, 226.0, 103.0 ],
-					"text" : "TODO: \n\naddTurbulenceNoise based on constriction values,\n\ntongue/constriction index values scaling with tract N"
+					"id" : "obj-12",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 695.0, 162.0, 32.0, 22.0 ],
+					"text" : "n $1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-8",
+					"maxclass" : "newobj",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "float" ],
+					"patching_rect" : [ 156.015245616436005, 158.0, 39.0, 22.0 ],
+					"text" : "/ 127."
 				}
 
 			}
@@ -71,18 +83,6 @@
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 188.564268529415074, 182.0, 127.0, 22.0 ],
 					"text" : "if $f1 > 0 then 1 else 0"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-10",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 155.289757072925568, 158.0, 119.0, 22.0 ],
-					"text" : "expr pow($f1/127\\, 2)"
 				}
 
 			}
@@ -137,18 +137,6 @@
 			}
 , 			{
 				"box" : 				{
-					"id" : "obj-1",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 254.23729419708252, 378.813568353652954, 107.0, 22.0 ],
-					"text" : "loadmess voices 5"
-				}
-
-			}
-, 			{
-				"box" : 				{
 					"id" : "obj-4",
 					"maxclass" : "message",
 					"numinlets" : 2,
@@ -167,40 +155,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 483.0, 282.0, 49.0, 22.0 ],
-					"text" : "target 1"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-28",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 254.0, 413.0, 131.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"filename" : "polyVoiceManager.js",
-						"parameter_enable" : 0
-					}
-,
-					"text" : "js polyVoiceManager.js"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-22",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "bang" ],
-					"patching_rect" : [ 761.0, 194.0, 118.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"embed" : 0
-					}
-,
-					"text" : "polybuffer~ diameter"
+					"text" : "target 0"
 				}
 
 			}
@@ -212,7 +167,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 88.740734159946442, 471.111095666885376, 112.0, 22.0 ],
-					"text" : "poly~ MPT_Voice 5"
+					"text" : "poly~ MPT_Voice 4"
 				}
 
 			}
@@ -241,20 +196,6 @@
 					"presentation" : 1,
 					"presentation_rect" : [ 456.0, 402.0, 150.0, 20.0 ],
 					"text" : "Enable audio to use GUI"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-72",
-					"maxclass" : "message",
-					"numinlets" : 2,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 522.0, 87.0, 29.5, 22.0 ],
-					"presentation" : 1,
-					"presentation_rect" : [ 209.75, 47.0, 29.5, 22.0 ],
-					"text" : "0"
 				}
 
 			}
@@ -456,7 +397,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 984.271050930023193, 663.51455420255661, 50.0, 22.0 ],
-					"text" : "0 0.56"
+					"text" : "0 1.24"
 				}
 
 			}
@@ -469,7 +410,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 817.271050930023193, 663.51455420255661, 50.0, 36.0 ],
-					"text" : "20.5 3.5"
+					"text" : "15.45 2.05"
 				}
 
 			}
@@ -483,7 +424,7 @@
 					"numoutlets" : 3,
 					"outlettype" : [ "", "", "" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 675.0, 303.0, 353.0, 332.0 ],
+					"patching_rect" : [ 686.0, 296.0, 353.0, 332.0 ],
 					"presentation" : 1,
 					"presentation_rect" : [ 75.0, 121.0, 364.0, 340.0 ]
 				}
@@ -525,35 +466,18 @@
 				}
 
 			}
-, 			{
-				"box" : 				{
-					"fontsize" : 12.0,
-					"id" : "obj-29",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "bang" ],
-					"patching_rect" : [ 759.66387414932251, 242.016809463500977, 146.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"embed" : 0
-					}
-,
-					"text" : "polybuffer~ noseDiameter"
-				}
-
-			}
  ],
 		"lines" : [ 			{
 				"patchline" : 				{
-					"destination" : [ "obj-28", 0 ],
-					"source" : [ "obj-1", 0 ]
+					"destination" : [ "obj-18", 0 ],
+					"source" : [ "obj-11", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-6", 2 ],
-					"source" : [ "obj-10", 0 ]
+					"destination" : [ "obj-30", 0 ],
+					"source" : [ "obj-12", 0 ]
 				}
 
 			}
@@ -631,16 +555,8 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-30", 0 ],
+					"destination" : [ "obj-12", 0 ],
 					"source" : [ "obj-49", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-10", 0 ],
-					"order" : 1,
-					"source" : [ "obj-5", 2 ]
 				}
 
 			}
@@ -656,6 +572,14 @@
 				"patchline" : 				{
 					"destination" : [ "obj-6", 0 ],
 					"source" : [ "obj-5", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-8", 0 ],
+					"order" : 1,
+					"source" : [ "obj-5", 2 ]
 				}
 
 			}
@@ -731,8 +655,8 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-64", 0 ],
-					"source" : [ "obj-72", 0 ]
+					"destination" : [ "obj-6", 2 ],
+					"source" : [ "obj-8", 0 ]
 				}
 
 			}
@@ -781,13 +705,6 @@
 				"bootpath" : "~/Projects/Max-Pink-Trombone",
 				"patcherrelativepath" : ".",
 				"type" : "gDSP",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "polyVoiceManager.js",
-				"bootpath" : "~/Projects/Max-Pink-Trombone",
-				"patcherrelativepath" : ".",
-				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
