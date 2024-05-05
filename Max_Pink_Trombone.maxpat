@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 82.0, 856.0, 730.0 ],
+		"rect" : [ 34.0, 76.0, 1373.0, 743.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -40,11 +40,37 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
-					"id" : "obj-33",
+					"id" : "obj-20",
+					"maxclass" : "message",
+					"numinlets" : 2,
+					"numoutlets" : 1,
+					"outlettype" : [ "" ],
+					"patching_rect" : [ 154.5, 418.0, 59.0, 22.0 ],
+					"text" : "voices $1"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-14",
+					"maxclass" : "number",
+					"maximum" : 5,
+					"minimum" : 1,
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 159.0, 381.0, 50.0, 22.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"id" : "obj-10",
 					"maxclass" : "dict.view",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 1237.0, 336.0, 100.0, 100.0 ]
+					"patching_rect" : [ 1183.0, 380.0, 142.0, 131.0 ]
 				}
 
 			}
@@ -111,7 +137,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 1101.0, 384.800005733966827, 50.0, 22.0 ],
-					"text" : "_ 1 f"
+					"text" : "H 1 f"
 				}
 
 			}
@@ -232,24 +258,10 @@
 					"saved_object_attributes" : 					{
 						"autostart" : 0,
 						"defer" : 0,
-						"node_bin_path" : "",
-						"npm_bin_path" : "",
 						"watch" : 0
 					}
 ,
 					"text" : "node.script leapShell.js"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-12",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 161.740734159946442, 365.0, 107.0, 22.0 ],
-					"text" : "loadmess voices 5"
 				}
 
 			}
@@ -260,7 +272,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "float", "bang" ],
-					"patching_rect" : [ 761.0, 218.0, 196.0, 22.0 ],
+					"patching_rect" : [ 792.0, 184.0, 196.0, 22.0 ],
 					"text" : "buffer~ targetDiameter @samps 44"
 				}
 
@@ -333,8 +345,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 88.740734159946442, 242.016809463500977, 277.0, 22.0 ],
-					"text" : "target $1, frequency $2, tenseness $3, intensity $4"
+					"patching_rect" : [ 88.740734159946442, 242.016809463500977, 300.0, 22.0 ],
+					"text" : "target $1, frequency $2, tensenessMult $3, intensity $4"
 				}
 
 			}
@@ -345,41 +357,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 483.0, 282.0, 49.0, 22.0 ],
+					"patching_rect" : [ 436.0, 234.0, 49.0, 22.0 ],
 					"text" : "target 0"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-28",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 1,
-					"outlettype" : [ "" ],
-					"patching_rect" : [ 161.740734159946442, 409.0, 131.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"filename" : "polyVoiceManager.js",
-						"parameter_enable" : 0
-					}
-,
-					"text" : "js polyVoiceManager.js"
-				}
-
-			}
-, 			{
-				"box" : 				{
-					"id" : "obj-22",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "bang" ],
-					"patching_rect" : [ 761.0, 194.0, 118.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"embed" : 0
-					}
-,
-					"text" : "polybuffer~ diameter"
 				}
 
 			}
@@ -391,7 +370,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
 					"patching_rect" : [ 88.740734159946442, 471.111095666885376, 112.0, 22.0 ],
-					"text" : "poly~ MPT_Voice 1"
+					"text" : "poly~ MPT_Voice 5"
 				}
 
 			}
@@ -635,7 +614,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 877.052574157714844, 641.052581906318665, 50.0, 22.0 ],
-					"text" : "0 -1.28"
+					"text" : "0 3.82"
 				}
 
 			}
@@ -648,7 +627,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 709.684166073799133, 641.052581906318665, 50.0, 36.0 ],
-					"text" : "10.6 2.75"
+					"text" : "20.5 3.5"
 				}
 
 			}
@@ -704,25 +683,16 @@
 				}
 
 			}
-, 			{
-				"box" : 				{
-					"fontsize" : 12.0,
-					"id" : "obj-29",
-					"maxclass" : "newobj",
-					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "bang" ],
-					"patching_rect" : [ 759.66387414932251, 242.016809463500977, 146.0, 22.0 ],
-					"saved_object_attributes" : 					{
-						"embed" : 0
-					}
-,
-					"text" : "polybuffer~ noseDiameter"
+ ],
+		"lines" : [ 			{
+				"patchline" : 				{
+					"destination" : [ "obj-10", 0 ],
+					"order" : 0,
+					"source" : [ "obj-1", 0 ]
 				}
 
 			}
- ],
-		"lines" : [ 			{
+, 			{
 				"patchline" : 				{
 					"destination" : [ "obj-23", 0 ],
 					"source" : [ "obj-1", 1 ]
@@ -739,23 +709,8 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-33", 0 ],
-					"order" : 0,
-					"source" : [ "obj-1", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-30", 0 ],
+					"destination" : [ "obj-18", 1 ],
 					"source" : [ "obj-11", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-28", 0 ],
-					"source" : [ "obj-12", 0 ]
 				}
 
 			}
@@ -768,7 +723,14 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-30", 0 ],
+					"destination" : [ "obj-20", 0 ],
+					"source" : [ "obj-14", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-18", 1 ],
 					"source" : [ "obj-15", 0 ]
 				}
 
@@ -800,6 +762,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
 					"source" : [ "obj-19", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-18", 0 ],
+					"source" : [ "obj-20", 0 ]
 				}
 
 			}
@@ -837,13 +806,6 @@
 					"destination" : [ "obj-35", 1 ],
 					"order" : 0,
 					"source" : [ "obj-27", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-18", 0 ],
-					"source" : [ "obj-28", 0 ]
 				}
 
 			}
@@ -935,7 +897,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-30", 0 ],
+					"destination" : [ "obj-18", 1 ],
 					"source" : [ "obj-57", 0 ]
 				}
 
@@ -963,7 +925,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-30", 0 ],
+					"destination" : [ "obj-18", 1 ],
 					"source" : [ "obj-61", 0 ]
 				}
 
@@ -977,7 +939,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-30", 0 ],
+					"destination" : [ "obj-18", 1 ],
 					"source" : [ "obj-63", 0 ]
 				}
 
@@ -991,7 +953,7 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-30", 0 ],
+					"destination" : [ "obj-18", 1 ],
 					"source" : [ "obj-65", 0 ]
 				}
 
@@ -1081,13 +1043,6 @@
 				"name" : "n4m.monitor.maxpat",
 				"bootpath" : "C74:/packages/Node for Max/patchers/debug-monitor",
 				"type" : "JSON",
-				"implicit" : 1
-			}
-, 			{
-				"name" : "polyVoiceManager.js",
-				"bootpath" : "~/Projects/Max-Pink-Trombone",
-				"patcherrelativepath" : ".",
-				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{

@@ -5,36 +5,33 @@ setoutletassist(1, "messages to tract");
 setoutletassist(2, "current [consonant, position, direction]");
 
 var dir = "f";
+var cons;
 
 var phonemes = JSON.parse(new Dict("phonemes").stringify());
 var {vowels, consonants, wheels, triangles} = phonemes;
+	
 
-function getPhonemes() {
-	var phonemes = JSON.parse(new Dict("phonemes").stringify());
-}
 
 function dictionary(e) {
-	
-	post("vowels" in phonemes);
-
-	
 	
 	const hand = new Dict(e);
 					
 	var vX = Math.min(1, Math.max(-1, hand.get("x")/100));
-	var vY = Math.min(1, Math.max(-1, (hand.get("y")-250)/100));
+	var vY = Math.min(1, Math.max(-1, hand.get("z")/-100));
 		
-	const cPos = Math.min(Math.max(0, (hand.get("z") + 50)/100), 1);
+	const cPos = 1 - hand.get("val");
+		
+	if (cPos % 1 == 0) {
+		dir = cPos ? "f" : "b";
+		const wI = Math.round(Math.min(Math.max(0, hand.get("r")/.4 + 1), 2));
+		const cWheel = wheels[wI];
+		cons = cWheel[[2, 0, 1, 3, 4][hand.get("num")]];
+	}
 	
-	if (cPos == 1) dir = "f";
-	else if (cPos == 0) dir = "b";
+	if (!cons) return;
 	
-	const wI = Math.min(Math.max(0, Math.round(hand.get("r") + 1)), 2);
-	const cWheel = wheels[wI];
 	
-	const c = cWheel[[2, 0, 1, 3, 4][hand.get("num")]];
-	
-	const cData = consonants[c];
+	const cData = consonants[cons];
 	
 	const frames = cData[dir] || cData.f;
 	const frame = frames[Math.round(cPos * (frames.length-1))]
@@ -52,12 +49,12 @@ function dictionary(e) {
 	})
 		
 	new Buffer("targetDiameter").poke(0, 0, totalDiameters);
-	
+			
 	outlet(0, "intensity", frame.i);
 	outlet(1, "velumTarget", frame.v);
 	outlet(0, "tensenessMult", frame.t);
 	
-	outlet(2, c, cPos, dir);
+	outlet(2, cons, cPos, dir);
 }
 
 function getVowelDiameters(x, y) {
