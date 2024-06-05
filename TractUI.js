@@ -17,9 +17,8 @@ var lipStart = 39;
 var noseLength = 28;
 var noseStart = tractN - noseLength + 1;
 
-var voice = 0;
-
 var diameter = new Float64Array(44);
+var velumTarget = 0.01;
 
 function n(newN) {
 	tractN = newN;
@@ -28,18 +27,13 @@ function n(newN) {
  	lipStart = Math.floor(39 * tractN/44);
  	noseLength = Math.floor(28 * tractN/44);
 	noseStart = tractN - noseLength + 1;
-	outlet(0, "target", voice);
 	outlet(0, "n", newN);
+	
+	getDiameters();
 }
 
 //var diameter = new Buffer("diameter." + voice);
-var noseDiameter = new Buffer("noseDiameter." + voice);
-
-function target(voiceNum) {
-	voice = voiceNum;
-	diameter = new Buffer("diameter." + voice);
-	noseDiameter = new Buffer("noseDiameter." + voice);
-}
+var noseDiameter = new Float64Array(28);
 
 var widthOrig = 490;
 var heightOrig = 520;
@@ -72,11 +66,23 @@ var cIndex = 0;
 var cDiameter = 5;
 
 var drawTask = new Task(function() {mgraphics.redraw()});
-drawTask.interval = 1000/60;
+drawTask.interval = 12;
 drawTask.repeat();
 
 function getDiameters() {
 	
+	for (var i=0; i<this.noseLength; i++)
+    {
+		var dia;
+    	var d = 2*(i/this.noseLength);
+    	if (d<1) dia = 0.4+1.6*d;
+    	else dia = 0.5+1.5*(2-d);
+    	dia = Math.min(dia, 1.9);
+    	noseDiameter[i] = dia;
+	}    
+	
+	noseDiameter[0] = velumTarget;
+		
 	for (var i=0; i < tractN; i++) {
         var d = 0;
         if (i<7*tractN/44-0.5) d = 0.6;
@@ -84,8 +90,6 @@ function getDiameters() {
         else d = 1.5;
 		diameter[i] = d;
     }
-
-
 
 	//inscribe tongue position
 	
@@ -132,9 +136,7 @@ function getDiameters() {
 //1231 (TractUI.draw())
 function paint() {
 	with (mgraphics) {
-		
-		getDiameters();
-		
+				
 		mgraphics.select_font_face("Arial bold");
 
 		drawTongueControl();
@@ -153,14 +155,14 @@ function paint() {
 		set_source_rgba(fillColor);
         tMoveTo(noseStart, - noseOffset);
         for (var i = 1; i < noseLength; i++) 
-			tLineTo(i+noseStart, -noseOffset - noseDiameter.peek(0, i) * 0.9);
+			tLineTo(i+noseStart, -noseOffset - noseDiameter[i] * 0.9);
 		for (var i = noseLength - 1; i >= 1; i--) 
 			tLineTo(i+noseStart, -noseOffset);  
 		close_path();
 		fill();
 		
 		//velum
-		var velum = noseDiameter.peek(0, 0);
+		var velum = noseDiameter[i];
         var velumAngle = velum * 4;
 
 		set_source_rgba(fillColor);
@@ -190,7 +192,7 @@ function paint() {
 		
 		tMoveTo(noseStart, -noseOffset);
         for (var i = 1; i < noseLength; i++) 
-			tLineTo(i + noseStart, -noseOffset - noseDiameter.peek(0, i) * 0.9);
+			tLineTo(i + noseStart, -noseOffset - noseDiameter[i] * 0.9);
 		tMoveTo(noseStart + velumAngle, -noseOffset);
         for (var i = Math.ceil(velumAngle); i < noseLength; i++) 
 			tLineTo(i + noseStart, -noseOffset);
@@ -318,12 +320,12 @@ function drawAmplitudes(noseStart) {
 		
 		for (var i = 2; i < tractN - 1; i++) {
             tMoveTo(i, 0);
-            tLineTo(i, diameter[0]);
+            tLineTo(i, diameter[i]);
         }
 
 		for (var i = 2; i < noseLength; i++) {
 			tMoveTo(i+noseStart, -noseOffset); 
-			tLineTo(i+noseStart, -noseOffset - noseDiameter.peek(0, i) * 0.9);
+			tLineTo(i+noseStart, -noseOffset - noseDiameter[i] * 0.9);
 		}
 		stroke_with_alpha(0.3);
 	}
@@ -385,7 +387,7 @@ function ondrag(x,y,button) {
 	handleTouch(index, dia, button);
 }
 
-function handleTouch(index, dia, button) {
+function handleTouch(index, dia) {
 	
 	cIndex = index;
 	cDiameter = dia;
@@ -411,7 +413,7 @@ function handleTouch(index, dia, button) {
 	}
 	
 	//1596
-	var velumTarget = 0.01;
+	velumTarget = 0.01;
 	
 	if (index > noseStart && dia < -noseOffset) velumTarget = 0.4;	
 	
@@ -420,12 +422,13 @@ function handleTouch(index, dia, button) {
 		Number(dia.toFixed(2))
 	]);
 	
-	outlet(0, "target", voice);
 	outlet(0, "velumTarget", velumTarget);
 	outlet(0, "constrictionIndex", index);
 	outlet(0, "constrictionDiameter", dia);
 	outlet(0, "tongueIndex", tIndex);
 	outlet(0, "tongueDiameter", tDiameter);
+	
+	getDiameters();
 	
 }
 
@@ -475,3 +478,5 @@ function onresize() {
 	
 	cnvAreaScale = Math.sqrt(Math.pow(cnvWidth, 2) + Math.pow(cnvHeight, 2)) / Math.sqrt(Math.pow(600, 2) + Math.pow(600, 2));
 }
+
+getDiameters();
