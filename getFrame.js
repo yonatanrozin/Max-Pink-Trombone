@@ -1,8 +1,8 @@
-outlets = 2;
+outlets = 3;
 
 setoutletassist(0, "messages for glottis");
-setoutletassist(1, "messages for tract/jsui");
-setoutletassist(2, "messages for jsui");
+setoutletassist(1, "messages for jsui");
+setoutletassist(2, "messages for tract");
 
 var r = new Dict("speech")
 var recs = JSON.parse(r.stringify());
@@ -25,6 +25,9 @@ function frame(rec, pos) {
 	outlet(1, "constrictionDiameter", f.cd + 0.3);
 	outlet(1, "tongueIndex", f.ti);
 	outlet(1, "tongueDiameter", f.td);
+	
+	outlet(2, "target", 0);
+	outlet(2, "noiseIntensity", f.n);
 }
 
 function dictionary() {

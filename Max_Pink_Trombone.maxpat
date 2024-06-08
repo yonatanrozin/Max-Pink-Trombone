@@ -330,8 +330,8 @@
 					"id" : "obj-38",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 2,
-					"outlettype" : [ "", "" ],
+					"numoutlets" : 3,
+					"outlettype" : [ "", "", "" ],
 					"patching_rect" : [ 815.0, 325.0, 84.0, 22.0 ],
 					"saved_object_attributes" : 					{
 						"filename" : "getFrame.js",
@@ -685,7 +685,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 717.0, 631.0, 50.0, 22.0 ],
-					"text" : "0 2.5"
+					"text" : "0 0.3"
 				}
 
 			}
@@ -698,7 +698,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 550.0, 631.0, 50.0, 36.0 ],
-					"text" : "13.28 2.5"
+					"text" : "20.25 3.49"
 				}
 
 			}
@@ -907,6 +907,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-24", 0 ],
 					"source" : [ "obj-31", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-18", 1 ],
+					"source" : [ "obj-38", 2 ]
 				}
 
 			}
