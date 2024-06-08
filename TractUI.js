@@ -401,6 +401,7 @@ function handleTouch(index, dia, button) {
 		Number(dia.toFixed(2))
 	]);
 	
+	outlet(0, "target", 0);
 	outlet(0, "velumTarget", velumTarget);
 	outlet(0, "constrictionIndex", index);
 	outlet(0, "constrictionDiameter", dia);
@@ -424,7 +425,7 @@ function getDiameter(x,y) {
 }
 
 function tongueIndex(val) {
-	tIndex = val;
+	tIndex = val / 44 * tractN;
 	outlet(0, "tongueIndex", tIndex);
 	getDiameters();
 
@@ -438,7 +439,7 @@ function tongueDiameter(val) {
 }
 
 function constrictionIndex(val) {
-	cIndex = val;
+	cIndex = val/44 * tractN;
 	handleTouch(cIndex, cDiameter, 1);
 }
 
