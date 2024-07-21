@@ -133,10 +133,10 @@ function getDiameters() {
 			else shrink = 0.5*(1-Math.cos(Math.PI * relpos / width));
 			if (dia < targetDiameter.peek(0, intIndex+i)) {
 				targetDiameter.poke(0, intIndex + i, dia + (targetDiameter.peek(0, intIndex+i)-dia)*shrink);
+
 			}
 		}
 	}
-
 }
 
 //1231 (TractUI.draw())

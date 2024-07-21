@@ -4,14 +4,14 @@ const fs = require('fs');
 
 let consonants;
 
-const cGroups = [
-	["T", "F", "G/NG", "S"],
-	["N", "M", "L", "R"],
-	["D", "B", "H", "K"],
-];
-
-let con;
+let cons;
 let dir;
+
+const cGroups = [
+	["_", "T", "V", "G/NG", "S"],
+	["_", "N", "M", "L", "R"],
+	["_", "D", "B", "H", "K"],
+];
 
 const vowels = [
 	[
@@ -30,6 +30,63 @@ getDict("consonants").then(res => {consonants = res});
 const pyLeapMotion = spawn("python3", ["./pyLeapMotion.py"], {stdio: "pipe"});
 		
 pyLeapMotion.stdout.on("data", async function(msg) {
+		
+	const dataIn = JSON.parse(msg.toString());
+	
+	const {x, y, z, num, r} = dataIn;
+		
+	if (y > 600) {
+		outlet("glottis", "intensity", 0);
+		return;
+	}
+		
+	const vx = map(x, -100, 100, 0, 2, true);
+	const vy = map(z, -100, 100, 0, 2, true);
+	
+	const vowel = getVowel(vx, vy);
+	
+	const cGroupI = r > 0.3 ? 0 : r < -0.3 ? 2 : 1;
+		
+	const pos = map(y, 200, 350, 1, 0, true);
+	
+	if (pos == 0) {
+		dir = "b";
+		cons = cGroups[cGroupI][num];
+	} else if (pos == 1) {
+		dir = "f";
+		cons = cGroups[cGroupI][num];
+	}
+	
+	if (cons && dir) {
+		const phon = consonants[cons];
+		const {frames, adj} = phon[dir] || phon.f;
+		const frameI = Math.floor(pos * (frames.length -1));
+		const frame = frames[frameI];
+		const {i, t, n, ci, cd, v, ta} = frame;
+						
+		if (adj && ta) {
+			vowel[0] = map(ta, 0, 1, vowel[0], adj.i, true);
+			vowel[1] = map(ta, 0, 1, vowel[1], adj.d, true);
+			vowel[2] = map(ta, 0, 1, vowel[2], 1.5, true);
+		}
+					
+		outlet("glottis", "intensity", i);
+		outlet("glottis", "tensenessMult", t);
+		
+		outlet("tract", "noiseIntensity", n);
+		outlet("tract", "constrictionIndex", ci);
+		outlet("tract", "constrictionDiameter", cd + 0.3);
+		outlet("tract", "velumTarget", v);
+		
+		outlet("data", {consonant: cons, dir: dir, frame: frameI});
+	}
+	
+	outlet("tract", "tongueIndex", vowel[0]);
+	outlet("tract", "tongueDiameter", vowel[1]);
+	outlet("tract", "lipDiameter", vowel[2]);
+
+	
+	/*
 		
 	if (!consonants) return;
 	
@@ -74,22 +131,22 @@ pyLeapMotion.stdout.on("data", async function(msg) {
 	outlet("glottis", "intensity", frame.i);
 	outlet("glottis", "tensenessMult", frame.t);
 	
-	outlet("data", frame);
+	outlet("data", dataIn);
+	
+	*/
 });
 
-function getVowel(x, z) {
-		
-	//get vowel data (tongue index, diameter + lip diameter)
-	const vx = map(x, -100, 100, 0, 2, true);
-	const vy = map(z, -100, 100, 0, 2, true);
+
+//input normalized "vowel" x and y (0 - 2);
+function getVowel(x, y) {
 	
-	const interpValX = vx % 1;
-	const interpValY = vy % 1;
+	const interpValX = x % 1;
+	const interpValY = y % 1;
 	
-	const vix1 = Math.floor(vx);
+	const vix1 = Math.floor(x);
 	const vix2 = vix1 == 2 ? vix1 : vix1 + 1;
 	
-	const viy1 = Math.floor(vy);
+	const viy1 = Math.floor(y);
 	const viy2 = viy1 == 2 ? viy1 : viy1 + 1;
 		
 	const v11 = vowels[viy1][vix1];

@@ -52,41 +52,44 @@ class MyListener(leap.Listener):
         else:
             self.frameTime = newTime
 
-        if not len(event.hands):
-            return
-        
-        hand = None
         for i in range(len(event.hands)):
-            if event.hands[i].type == leap.HandType.Right:
-                hand = event.hands[i]
+
+            hand = event.hands[i]
+
+            if not hand.type == leap.HandType.Right:
+                continue
                 
-        if not hand:
-            return
+            [x, y, z] = [int(val) for val in list(hand.palm.position)]
+
+            q = hand.digits[3].proximal.rotation
+            r = round(math.asin(-2.0*(q.x*q.z - q.w*q.y)), 3)
+
+            # extStates = [not dig.is_extended for dig in hand.digits]
+            # extends = [ext for ext in extStates if ext]
 
 
-        [x, y, z] = [int(val) for val in list(hand.palm.position)]
+            digBase = [list(d.proximal.prev_joint) for d in hand.digits[1:]]
+            digTip = [list(d.distal.next_joint) for d in hand.digits[1:]]
+            digDiff = [np.asarray(t) - np.asarray(b) for (t, b) in zip(digTip, digBase)]
 
-        q = hand.digits[3].proximal.rotation
-        r = math.asin(-2.0*(q.x*q.z - q.w*q.y))
+            rotation = Rotation.from_quat(np.array(list(hand.palm.orientation)))
+            diffRotated = [rotation.inv().apply(diff) for diff in digDiff]
 
-        digBase = [list(d.proximal.prev_joint) for d in hand.digits[1:]]
-        digTip = [list(d.distal.next_joint) for d in hand.digits[1:]]
-        digDiff = [np.asarray(t) - np.asarray(b) for (t, b) in zip(digTip, digBase)]
+            digBend = [np.arctan2(rot[1], rot[2]) * 180/math.pi % 360 for rot in diffRotated]
+            digScale = [scale(b, 180, 290, 0, 1) for b in digBend]
 
-        rotation = Rotation.from_quat(np.array(list(hand.palm.orientation)))
-        diffRotated = [rotation.inv().apply(diff) for diff in digDiff]
+            sMax = max(digScale)
+            digPos = [scale(d, .35, .95, 0, 1) for d in digScale if d > .2 and sMax - d < .4]
 
-        digBend = [np.arctan2(rot[1], rot[2]) * 180/math.pi % 360 for rot in diffRotated]
-        digScale = [scale(b, 180, 290, 0, 1) for b in digBend]
+            num = len(digPos)
+            # val = 0 if not num else round(max(digPos), 2)
 
-        sMax = max(digScale)
-        digPos = [scale(d, .35, .95, 0, 1) for d in digScale if d > .2 and sMax - d < .4]
+            dataOut = {"x": x, "y": y, "z": z, "r": r, "num": num}
 
-        num = len(digPos)
-        val = 0 if not num else max(digPos)
+            print(json.dumps(dataOut))
+            sys.stdout.flush()
 
-        print(json.dumps({"x": x, "y": y, "z": z, "r": r, "val": val, "num": num}))
-        sys.stdout.flush()
+            break
 
 def main():
     my_listener = MyListener()
