@@ -438,7 +438,6 @@ function handleTouch(index, dia, button) {
 	
 	getDiameters();
 
-	
 	//1596
 	velum = 0.01;
 	
@@ -456,6 +455,7 @@ function handleTouch(index, dia, button) {
 		outlet(0, "constrictionDiameter", dia);
 		outlet(0, "tongueIndex", tIndex);
 		outlet(0, "tongueDiameter", tDiameter);
+		outlet(0, "lipDiameter", lDiameter);
 	}
 }
 
@@ -480,7 +480,6 @@ function tongueIndex(val) {
 		outlet(0, "tongueIndex", tIndex);
 	}
 	getDiameters();
-
 }
 
 function tongueDiameter(val) {
@@ -490,7 +489,6 @@ function tongueDiameter(val) {
 		outlet(0, "tongueDiameter", tDiameter);
 	}
 	getDiameters();
-
 }
 
 function constrictionIndex(val) {
@@ -505,7 +503,7 @@ function constrictionDiameter(val) {
 
 function lipDiameter(l) {
 	lDiameter = l;
-	getDiameters();
+	handleTouch(cIndex, cDiameter, 1);
 }
 
 function velumTarget(v) {
@@ -555,10 +553,8 @@ function n(newN) {
 function onresize() {
 		
 	cnvWidth = box.rect[2] - box.rect[0];	
-	box.size(cnvWidth, cnvWidth);
-	
 	cnvHeight = box.rect[3] - box.rect[1];
 
+	box.size(cnvWidth, cnvWidth);
 	cnvAreaScale = Math.sqrt(Math.pow(cnvWidth, 2) + Math.pow(cnvHeight, 2)) / Math.sqrt(Math.pow(600, 2) + Math.pow(600, 2));
-	
 }

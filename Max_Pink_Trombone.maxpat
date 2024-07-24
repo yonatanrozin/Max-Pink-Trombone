@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 76.0, 1373.0, 743.0 ],
+		"rect" : [ 34.0, 76.0, 1125.0, 743.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -152,9 +152,10 @@
 					"patching_rect" : [ 609.000007152557373, 90.400001347064972, 41.0, 48.0 ],
 					"saved_attribute_attributes" : 					{
 						"valueof" : 						{
-							"parameter_initial" : [ 0.0 ],
+							"parameter_initial" : [ 3.0 ],
+							"parameter_initial_enable" : 1,
 							"parameter_longname" : "Constriction Diameter",
-							"parameter_mmax" : 44.0,
+							"parameter_mmax" : 3.0,
 							"parameter_modmode" : 3,
 							"parameter_shortname" : "c_dia",
 							"parameter_type" : 0,
@@ -318,7 +319,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 459.5, 443.0, 50.0, 36.0 ],
-					"text" : "17.02 2.93"
+					"text" : "20.5 3.5"
 				}
 
 			}
@@ -330,7 +331,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 526.0, 443.0, 50.0, 22.0 ],
-					"text" : "0 0"
+					"text" : "0 3"
 				}
 
 			}
@@ -391,8 +392,8 @@
 					"numinlets" : 3,
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 90.0, 499.0, 183.0, 22.0 ],
-					"text" : "poly~ MPT_Voice 10 @parallel 1"
+					"patching_rect" : [ 90.0, 499.0, 176.0, 22.0 ],
+					"text" : "poly~ MPT_Voice 1 @parallel 1"
 				}
 
 			}
@@ -871,7 +872,7 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-1", 1 ],
-					"midpoints" : [ 433.5, 486.0, 181.5, 486.0 ],
+					"midpoints" : [ 433.5, 486.0, 178.0, 486.0 ],
 					"source" : [ "obj-74", 0 ]
 				}
 
@@ -926,28 +927,28 @@
 ,
 		"dependency_cache" : [ 			{
 				"name" : "MPT_Voice.maxpat",
-				"bootpath" : "~/Projects/Max-Pink-Trombone",
+				"bootpath" : "~/Desktop/Max-Pink-Trombone",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "TractUI.js",
-				"bootpath" : "~/Projects/Max-Pink-Trombone",
+				"bootpath" : "~/Desktop/Max-Pink-Trombone",
 				"patcherrelativepath" : ".",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "glottis_processor.gendsp",
-				"bootpath" : "~/Projects/Max-Pink-Trombone",
+				"bootpath" : "~/Desktop/Max-Pink-Trombone",
 				"patcherrelativepath" : ".",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "tract_processor.gendsp",
-				"bootpath" : "~/Projects/Max-Pink-Trombone",
+				"bootpath" : "~/Desktop/Max-Pink-Trombone",
 				"patcherrelativepath" : ".",
 				"type" : "gDSP",
 				"implicit" : 1
