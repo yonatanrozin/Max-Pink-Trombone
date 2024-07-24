@@ -60,13 +60,11 @@ getDiameters();
 
 n(tractN);
 
-
 function target() {
 	voiceTargets = arguments;
 	mgraphics.redraw();
 }
 
-setN(tractN);
 getDiameters();
 
 function getDiameters() {

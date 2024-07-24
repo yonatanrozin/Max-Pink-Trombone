@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 76.0, 1125.0, 743.0 ],
+		"rect" : [ 134.0, 134.0, 877.0, 743.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -340,7 +340,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 634.000007152557373, 345.600005149841309, 59.0, 22.0 ],
+					"patching_rect" : [ 370.0, 113.0, 59.0, 22.0 ],
 					"text" : "target 1 2"
 				}
 
@@ -602,25 +602,8 @@
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-38", 0 ],
-					"order" : 0,
-					"source" : [ "obj-26", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"destination" : [ "obj-8", 0 ],
-					"order" : 1,
 					"source" : [ "obj-26", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-3", 1 ],
-					"order" : 0,
-					"source" : [ "obj-28", 1 ]
 				}
 
 			}
@@ -635,7 +618,6 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-52", 1 ],
-					"order" : 1,
 					"source" : [ "obj-28", 1 ]
 				}
 
@@ -874,15 +856,6 @@
 , 			{
 				"patchline" : 				{
 					"destination" : [ "obj-1", 0 ],
-					"order" : 1,
-					"source" : [ "obj-8", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-6", 2 ],
-					"order" : 0,
 					"source" : [ "obj-8", 0 ]
 				}
 
@@ -916,28 +889,28 @@
 ,
 		"dependency_cache" : [ 			{
 				"name" : "MPT_Voice.maxpat",
-				"bootpath" : "~/Desktop/Max-Pink-Trombone",
+				"bootpath" : "~/Projects/Max-Pink-Trombone",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "TractUI.js",
-				"bootpath" : "~/Desktop/Max-Pink-Trombone",
+				"bootpath" : "~/Projects/Max-Pink-Trombone",
 				"patcherrelativepath" : ".",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "glottis_processor.gendsp",
-				"bootpath" : "~/Desktop/Max-Pink-Trombone",
+				"bootpath" : "~/Projects/Max-Pink-Trombone",
 				"patcherrelativepath" : ".",
 				"type" : "gDSP",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "tract_processor.gendsp",
-				"bootpath" : "~/Desktop/Max-Pink-Trombone",
+				"bootpath" : "~/Projects/Max-Pink-Trombone",
 				"patcherrelativepath" : ".",
 				"type" : "gDSP",
 				"implicit" : 1
