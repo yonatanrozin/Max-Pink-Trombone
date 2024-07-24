@@ -17,14 +17,8 @@ var lipStart = 39;
 var noseLength = 28;
 var noseStart = tractN - noseLength + 1;
 
-<<<<<<< HEAD
-var diameter = new Float64Array(44);
-var noseDiameter = new Float64Array(28);
-var velumTarget = 0.01;
-=======
 var noseDiameter = new Float64Array(28);
 var velum = 0.01;
->>>>>>> 86347bf17b6d40b4105620ad049970806f986848
 
 var widthOrig = 520;
 var heightOrig = 520;
@@ -157,10 +151,6 @@ function getDiameters() {
 //1231 (TractUI.draw())
 function paint() {
 	with (mgraphics) {
-<<<<<<< HEAD
-				
-		mgraphics.select_font_face("Arial bold");
-=======
 						
 		select_font_face("Arial Bold");
 		
@@ -170,7 +160,6 @@ function paint() {
 				.map(function(i) {return voiceTargets[i] || "all"})
 				.join(",") + ")");
 		fill();
->>>>>>> 86347bf17b6d40b4105620ad049970806f986848
 
 		drawTongueControl();
 
@@ -196,11 +185,7 @@ function paint() {
 		
 		//velum
 		//var velum = noseDiameter[0];
-<<<<<<< HEAD
-        var velumAngle = velumTarget * 4;
-=======
         var velumAngle = velum * 4;
->>>>>>> 86347bf17b6d40b4105620ad049970806f986848
 
 		set_source_rgba(fillColor);
 		tMoveTo(noseStart-2, 0);
@@ -355,11 +340,7 @@ function drawAmplitudes(noseStart) {
 		
 		for (var i = 2; i < tractN - 1; i++) {
             tMoveTo(i, 0);
-<<<<<<< HEAD
-            tLineTo(i, diameter[i]);
-=======
             tLineTo(i, targetDiameter[i]);
->>>>>>> 86347bf17b6d40b4105620ad049970806f986848
         }
 
 		for (var i = 2; i < noseLength; i++) {
@@ -435,13 +416,7 @@ function handleTouch(index, dia, button) {
 		
 	cIndex = index;
 	cDiameter = dia;
-<<<<<<< HEAD
-	
-	getDiameters();
-	
-=======
 		
->>>>>>> 86347bf17b6d40b4105620ad049970806f986848
 	var tongueLowerIndexBound = bladeStart + 2;
 	var tongueUpperIndexBound = tipStart - 3;
 	var tongueIndexCentre = (tongueLowerIndexBound + tongueUpperIndexBound) / 2;
@@ -463,13 +438,8 @@ function handleTouch(index, dia, button) {
 		]);
 	}
 	
-<<<<<<< HEAD
-	//1596
-	velumTarget = 0.01;
-=======
 	getDiameters();
 
->>>>>>> 86347bf17b6d40b4105620ad049970806f986848
 	
 	//1596
 	velum = 0.01;
@@ -481,15 +451,6 @@ function handleTouch(index, dia, button) {
 		Number(dia.toFixed(2))
 	]);
 	
-<<<<<<< HEAD
-	outlet(0, "target", 0);
-	outlet(0, "velumTarget", velumTarget);
-	outlet(0, "constrictionIndex", index);
-	outlet(0, "constrictionDiameter", dia);
-	outlet(0, "tongueIndex", tIndex);
-	outlet(0, "tongueDiameter", tDiameter);
-	
-=======
 	for (var i in voiceTargets) {
 		outlet(0, "target", voiceTargets[i]);
 		outlet(0, "velumTarget", velum);
@@ -498,7 +459,6 @@ function handleTouch(index, dia, button) {
 		outlet(0, "tongueIndex", tIndex);
 		outlet(0, "tongueDiameter", tDiameter);
 	}
->>>>>>> 86347bf17b6d40b4105620ad049970806f986848
 }
 
 function getIndex(x,y) {
@@ -517,28 +477,20 @@ function getDiameter(x,y) {
 
 function tongueIndex(val) {
 	tIndex = val / 44 * tractN;
-<<<<<<< HEAD
-	outlet(0, "tongueIndex", tIndex);
-=======
 	for (var i in voiceTargets) {
 		outlet(0, "target", voiceTargets[i]);
 		outlet(0, "tongueIndex", tIndex);
 	}
->>>>>>> 86347bf17b6d40b4105620ad049970806f986848
 	getDiameters();
 
 }
 
 function tongueDiameter(val) {
 	tDiameter = val;
-<<<<<<< HEAD
-	outlet(0, "tongueDiameter", tDiameter);
-=======
 	for (var i in voiceTargets) {
 		outlet(0, "target", voiceTargets[i]);
 		outlet(0, "tongueDiameter", tDiameter);
 	}
->>>>>>> 86347bf17b6d40b4105620ad049970806f986848
 	getDiameters();
 
 }
@@ -553,16 +505,6 @@ function constrictionDiameter(val) {
 	handleTouch(cIndex, cDiameter, 1);
 }
 
-<<<<<<< HEAD
-function n(newN) {
-	outlet(0, "target", 0);
-	outlet(0, "n", newN);
-	setN(newN);
-}
-
-
-function setN(newN) {
-=======
 function lipDiameter(l) {
 	lDiameter = l;
 	getDiameters();
@@ -585,7 +527,6 @@ function noiseIntensity(ni) {
 
 
 function n(newN) {
->>>>>>> 86347bf17b6d40b4105620ad049970806f986848
 	tractN = newN;
  	bladeStart = Math.floor(10 * tractN/44);
  	tipStart = Math.floor(32 * tractN/44);
@@ -593,12 +534,9 @@ function n(newN) {
  	noseLength = Math.floor(28 * tractN/44);
 	noseStart = tractN - noseLength + 1;
 	
-<<<<<<< HEAD
-=======
 	noseDiameter = new Float64Array(noseLength);
 	targetDiameter = new Float64Array(newN);
 
->>>>>>> 86347bf17b6d40b4105620ad049970806f986848
 	for (var i=0; i < noseLength; i++) {
 		var dia;
     	var d = 2 * (i/noseLength);
@@ -609,15 +547,11 @@ function n(newN) {
 	}   
 	
 	getDiameters();
-<<<<<<< HEAD
-  
-=======
 	
 	for (var i in voiceTargets) {
 		outlet(0, "target", voiceTargets[i]);
 		outlet(0, "n", newN);
   	}
->>>>>>> 86347bf17b6d40b4105620ad049970806f986848
 }
 
 function onresize() {

@@ -1,11 +1,5 @@
 # Max Pink Trombone
-<<<<<<< HEAD
-A Max/MSP port of the fantastic [Pink Trombone](https://dood.al/pinktrombone/) vocal synthesizer.
-
-__THESE DOCS ARE SLIGHTLY OUTDATED FOR THE POLYPHONIC VERSION!!! UPDATED DOCS COMING SOON__
-=======
 A Max/MSP port of the fantastic [Pink Trombone](https://dood.al/pinktrombone/) vocal synthesizer, made by Neil Thapen.
->>>>>>> 86347bf17b6d40b4105620ad049970806f986848
 
 ## Installation
 - ```git clone``` this repo into a local folder of your choice or download the ZIP file.
@@ -15,57 +9,27 @@ A Max/MSP port of the fantastic [Pink Trombone](https://dood.al/pinktrombone/) v
 This patcher is essentially a 1:1 port of the Pink Trombone vocal synthesizer into Max/MSP. The goal of this port is to leverage the incredible real-time voice synthesis of Pink Trombone inside the powerful and flexible interface of Max/MSP for the creation of experimental live performances that explore procedural speech generation. By default, this patcher works and sounds identically to the online version, with a few added features:
 
 ### New features
-<<<<<<< HEAD
-- Separate Glottis and Tract audio processes
-=======
 - Polyphony
   - Control an entire Pink Trombone chorus!
 - MIDI input
   - Control your voice(s) with a MIDI keyboard and map knobs, sliders, etc. to expressive parameters.
 - Separate Glottis and Tract audio objects
->>>>>>> 86347bf17b6d40b4105620ad049970806f986848
   - Filter raw glottal source with EQ to create unique voice timbres
   - Replace glottal source with a different audio source entirely - make any audio source talk!
 
-<<<<<<< HEAD
-### Coming soon
-- MIDI input
-- A tool for recording/playback of speech values
-- A tool for generating sequences of constriction/tongue values for speech automation
-- Max4Live plugin - record/manipulate speech values from Ableton Live
-=======
 ### Coming soon (eventually)
 - Voice presets - choose between a number of pre-created vocal timbres
 - Max4Live plugin - record/manipulate speech values from an Ableton Live set
->>>>>>> 86347bf17b6d40b4105620ad049970806f986848
 
 ## Usage
 Load the main patcher, enable audio, press on some keys on the [kslider] (or input some MIDI notes) and click around the GUI. The patcher will route notes to individual voices polyphonically, provided there are enough [poly~] voices enabled (10 by default). 
 
-<<<<<<< HEAD
-Look inside ```[poly~ MPT_Voice]``` for audio processing objects
-
-### ```[gen~ glottis_processor]```
-The glottis processor produces a raw "glottal source": the sound produced by the human vocal cords before passing through the mouth; and an "aspiration" signal: white noise added to the glottal source to simulate the sound of breath. Aspiration gets louder with lower tenseness values.
-=======
 ### [poly~ MPT_Voice]
 MPT_Voice is a patcher that produces a single Pink Trombone voice. It contains (among other things) 2 [gen~] patches that control the voice glottis and tract. Each gen~ patch includes adjustable parameters that control the voice's timbral properties and produce speech.
->>>>>>> 86347bf17b6d40b4105620ad049970806f986848
 
 #### [gen~ glottis_processor]
 To set glottis param values, input a message ```<param> <value>``` to inlet 1 of MPT_Voice. You'll want to first input ```target <voiceNumber>``` to specify which voice you're manipulating. You can accomplish both in a single message using ```target <voiceNum>, <param> <value>```.
 
-<<<<<<< HEAD
-#### Inlets/outlets
-- Inlet 1 (signal) sets voice frequency (in Hz).
-  - Modulate the signal (probably with a sine wave LFO) to create vibrato effects. Experiment with different LFO frequencies and amplitudes to vary vibrato frequency and intensity. A constant frequency value will produce a robotic sound, so it's recommended to modulate the frequency at least a little bit.
-- Inlet 2 (signal) receives the aspiration noise - filtered white noise used to simulate the sound of "breathiness" in the synthesized voice. In Pink Trombone, this is half-amplitude white noise filtered through a 500Hz, .5Q bandpass filter.
-- Outlet 1 (signal) outputs the raw glottal source.
-  - Optionally, route this signal through an EQ (or some other effect/filter?) to create voices with different timbres ("feminine" voices, etc).
-  - Alternatively, replace the glottal source with an entirely different audio source and leave this outlet unconnected (see "using non-glottal source")
-- Outlet 2 (signal) outputs aspiration noise resulting from low tenseness values. You should combine (+~) this signal with your audio source (glottis or other) before inputting to the tract.
-- Outlet 3 (signal) outputs a noise modulator signal, a variable shared between the glottis and tract. The signal should be connected directly to inlet 2 of ```[gen~ tract_processor]```.
-=======
 ##### Params
 - frequency (in Hz) - sets the fundamental frequency of the voice
 - vibratoFrequency (in hz) - sets the frequency of vibrato - an LFO that modulates the fundamental frequency
@@ -74,7 +38,6 @@ To set glottis param values, input a message ```<param> <value>``` to inlet 1 of
 - tensenessMult (0-1) - a multiplier of tenseness values to be manipulated during production of unpitched consonants (P, F, S, etc).
 - intensity (0-1) - the volume of the pitched component of the produced voice. Set to 0 to silence the voice.
 - useCustomSource (0 or 1) - if 0 (default), will synthesize a raw vocal cord signal to filter into speech. Otherwise, will use a custom glottal signal inputted to the 3rd inlet of MPT_Voice for a vocoder-like effect. (see "using custom glottal source" below)
->>>>>>> 86347bf17b6d40b4105620ad049970806f986848
 
 #### [gen~ tract_processor]
 
@@ -96,8 +59,6 @@ Constriction index + diameter are used to control the tip of the "tongue", which
 ### [jsui]
 The JSUI renders an interactive GUI identical to that found in the original Pink Trombone. It produces messages for the MPT_Voice tract when interacted with. __If using messages manually to manipulate the vocal tract and you want those changes to be reflected in the GUI, you must send those messages to inlet 1 of the jsui instead!__
 
-<<<<<<< HEAD
-=======
 - Outlet 1 will produce tract param messages when interacted with. It should ALWAYS remain connected directly to inlet 2 of MPT_Voice. 
 - Outlet 2 will output the position of the base of the tongue (tongueIndex + tongueDiameter) when moved. This serves no purpose other than allowing you to view the values, should you want to note them. Connect to inlet 2 of a message object to view, or remain unconnected.
 - Outlet 3 will output the constriction position (constrictionIndex + constrictionDiameter) when moved. This serves no purpose other than allowing you to view the values, should you want to note them. Connect to inlet 2 of a message object to view, or remain unconnected.
@@ -117,6 +78,5 @@ By default, the glottis gen patch will synthesize a raw vocal cord signal using 
 
 There is currently no way to input multiple custom sources to different voices within a single [poly~] object. If you want 2 different voices with 2 different custom sources, you'll need to use multiple [poly~] objects.
 
->>>>>>> 86347bf17b6d40b4105620ad049970806f986848
 ## Notice
 This patch is based heavily and exclusively on the original [Pink Trombone](https://dood.al/pinktrombone/), created by Neil Thapen and released under the [MIT License](https://opensource.org/license/mit). A copy of the original code and the license are included in this repository [here](https://github.com/yonatanrozin/Max-Pink-Trombone/blob/main/Pink_Trombone_Original.html).
